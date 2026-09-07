@@ -1,7 +1,9 @@
-﻿#include "float-helper.h"
+﻿#include "float-helper.hpp"
+
+#include <cmath>
 
 namespace math_helpers {
-	const double FloatHelper::round_to_sig(const int& digits) const
+	double NumberSequenceHelper::round_to_sig(const int& digits) const
 	{
 		using std::fabs;
 		using std::floor;
@@ -14,18 +16,18 @@ namespace math_helpers {
 			return 0.0;
 		}
 
-		auto abs_value = fabs(this->source);
+		const auto abs_value = fabs(this->source);
 
-		auto exponent = static_cast<int>(floor(log10(abs_value) + 1e-12));
+		const auto exponent = static_cast<int>(floor(log10(abs_value) + 1e-12));
 
-		auto factor = pow(10.0, digits - 1 - exponent);
+		const auto factor = pow(10.0, digits - 1 - exponent);
 
 		return round(this->source * factor) / factor;
 	}
 
 	double round_to_signum_digits(const double& source, const int& sign_digits)
 	{
-		auto helper = FloatHelper(source);
+		const auto helper = NumberSequenceHelper(source);
 
 		return helper.round_to_sig(sign_digits);
 	}

@@ -1,19 +1,19 @@
 ﻿#include <iostream>
 #include <iomanip>
-#include "float-helper.h"
+#include "float-helper.hpp"
 
 using std::cin;
 using std::cout;
 using std::endl;
 using std::setprecision;
 
-void process_rounding_to(const char* msg, const double&, const int&);
+static void process_rounding_to(const char* msg, const double&, const int&);
 
 int main()
 {
-	auto big_number = 123456789.012378253;
-	
-	auto small_number = 0.000289898457879823992;
+	const auto big_number = 123456789.012378253;
+
+	const auto small_number = 0.000289898457879823992;
 
 	int sign_digits;
 
@@ -27,11 +27,11 @@ int main()
 	return 0;
 }
 
-void process_rounding_to(const char* msg, const double& source, const int& digits)
+static void process_rounding_to(const char* msg, const double& source, const int& digits)
 {
 	using math_helpers::round_to_signum_digits;
 
-	auto result = round_to_signum_digits(source, digits);
+	const auto result = round_to_signum_digits(source, digits);
 
 	cout << setprecision(12);
 

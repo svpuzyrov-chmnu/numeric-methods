@@ -22,4 +22,5 @@ if(MSVC)
     add_compile_definitions(_USE_MATH_DEFINES)
 endif()
 
-add_subdirectory ("errors")
+add_subdirectory ("error-theory")
+add_subdirectory ("sequences")

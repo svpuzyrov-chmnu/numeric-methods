@@ -1,4 +1,4 @@
-﻿project("errors")
+﻿project("functional-sequence")
 
 file(GLOB SRC src/*.cpp src/*.cxx)
 
