@@ -1,6 +1,4 @@
-﻿#include <iostream>
-#include <iomanip>
-#include "number-sequence-helper.hpp"
+﻿#pragma once
 void enter_tolerance(double &tolerance);
 
 bool check_continue();

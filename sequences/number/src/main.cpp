@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #include <iomanip>
-#include "number-sequence.hpp"
+#include "number-sequence-app.hpp"
 
 using std::cin;
 using std::cout;

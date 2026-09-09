@@ -2,8 +2,8 @@
 
 #include <cmath>
 
-namespace math_helpers {
-	double NumberSequenceHelper::round_to_sig(const int& digits) const
+namespace math_helpers::tolerance {
+	double FloatHelper::round_to_sig(const int& digits) const
 	{
 		using std::fabs;
 		using std::floor;
@@ -25,9 +25,17 @@ namespace math_helpers {
 		return round(this->source * factor) / factor;
 	}
 
+	int FloatHelper::sign_digits_by(const double& tolerance) {
+		using std::fabs;
+		using std::ceil;
+		using std::log10;
+
+		return static_cast<int>(ceil(fabs(log10(tolerance)))) - 1;
+	}
+
 	double round_to_signum_digits(const double& source, const int& sign_digits)
 	{
-		const auto helper = NumberSequenceHelper(source);
+		const auto helper = FloatHelper(source);
 
 		return helper.round_to_sig(sign_digits);
 	}

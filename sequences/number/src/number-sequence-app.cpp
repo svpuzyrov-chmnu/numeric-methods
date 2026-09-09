@@ -1,4 +1,7 @@
-﻿#include "number-sequence.hpp"
+﻿#include <iostream>
+#include <iomanip>
+#include "number-sequence-helper.hpp"
+#include "number-sequence-app.hpp"
 
 void enter_tolerance(double &tolerance) {
     do {
@@ -20,6 +23,7 @@ double multiplier(const int &n) {
 }
 
 void process_compute() {
+    using math_helpers::sequence::numeric::NumberSequenceHelper;
     do {
         double start_value = 1.0;
         int n = 0;
@@ -28,7 +32,7 @@ void process_compute() {
 
         enter_tolerance(tolerance);
 
-        auto helper = math_helpers::NumberSequenceHelper(multiplier, start_value, n);
+        auto helper = NumberSequenceHelper(multiplier, start_value, n);
 
         const auto result = helper.compute(tolerance);
         std::cout << std::setprecision(5) << "Tolerance: " << tolerance << std::endl;

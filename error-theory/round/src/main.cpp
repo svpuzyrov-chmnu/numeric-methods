@@ -29,7 +29,7 @@ int main()
 
 static void process_rounding_to(const char* msg, const double& source, const int& digits)
 {
-	using math_helpers::round_to_signum_digits;
+	using math_helpers::tolerance::round_to_signum_digits;
 
 	const auto result = round_to_signum_digits(source, digits);
 
