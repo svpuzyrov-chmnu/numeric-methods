@@ -1,4 +1,9 @@
-﻿#include "functional-sequnce-app.hpp"
+﻿#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include "functional-sequence-helper.hpp"
+#include "functional-sequence-teilor.hpp"
+#include "functional-sequnce-app.hpp"
 
 void enter_point(const double &a, const double &b, double &x) {
     do {
@@ -48,7 +53,7 @@ void process_compute() {
         {
             std::cout << "Custom function sequence approximation: " << std::endl;
 
-            auto helper = math_helpers::FunctionalSequenceHelper(start_evaluator, multiplier, n);
+            auto helper = math_helpers::sequences::functional::FunctionalSequenceHelper(start_evaluator, multiplier, n);
             const auto result = helper.compute(x, tolerance);
             std::cout << std::setprecision(5) << "Tolerance: " << tolerance << std::endl;
             std::cout << "Quantity of terms: " << helper.count_iterations() << std::endl;
@@ -61,7 +66,7 @@ void process_compute() {
 
             enter_point(0.001, 100.0, x);
 
-            math_helpers::logarithm::LogarithmFunctionalSequence helper;
+            math_helpers::sequences::functional::logarithm::LogarithmFunctionalSequence helper;
             const auto result = helper.compute(x, tolerance);
 
             std::cout << std::setprecision(5) << "Tolerance: " << tolerance << std::endl;
@@ -75,7 +80,7 @@ void process_compute() {
 
             enter_point(-100, 100.0, x);
 
-            math_helpers::exponential::ExponentialFunctionalSequence helper;
+            math_helpers::sequences::functional::exponential::ExponentialFunctionalSequence helper;
             const auto result = helper.compute(x, tolerance);
 
             std::cout << std::setprecision(5) << "Tolerance: " << tolerance << std::endl;

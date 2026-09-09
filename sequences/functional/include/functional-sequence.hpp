@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-namespace math_helpers {
+namespace math_helpers::sequences::functional {
     class FunctionalSequence {
     public:
         FunctionalSequence() = default;

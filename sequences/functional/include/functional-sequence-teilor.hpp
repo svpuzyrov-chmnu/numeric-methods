@@ -3,7 +3,7 @@
 #include "functional-sequence.hpp"
 
 
-namespace math_helpers::logarithm {
+namespace math_helpers::sequences::functional::logarithm {
     class LogarithmFunctionalSequence : public virtual FunctionalSequence {
         const int start_number;
         int count_iterations_;
@@ -24,7 +24,7 @@ namespace math_helpers::logarithm {
     };
 }
 
-namespace math_helpers::exponential {
+namespace math_helpers::sequences::functional::exponential {
     class ExponentialFunctionalSequence : public virtual FunctionalSequence {
         const int start_number;
         int count_iterations_;

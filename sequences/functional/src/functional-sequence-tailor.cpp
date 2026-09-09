@@ -3,7 +3,7 @@
 #include <cmath>
 
 
-namespace math_helpers::logarithm {
+namespace math_helpers::sequences::functional::logarithm {
     static double multiplier(const double &x, const int &n) {
         return x * x * (2.0 * n + 1.0) / (2.0 * n + 3.0);
     }
@@ -53,7 +53,7 @@ namespace math_helpers::logarithm {
     }
 }
 
-namespace math_helpers::exponential {
+namespace math_helpers::sequences::functional::exponential {
     static double multiplier(const double &x, const int &n) {
         return x / (n + 1.0);
     }
@@ -65,17 +65,25 @@ namespace math_helpers::exponential {
     double ExponentialFunctionalSequence::compute(const double &x, const double &tolerance) {
         using std::fabs;
 
+        auto sign_arg = 1;
 
-        auto current_term = start_value(x);
+        auto x1 = x;
+
+        if (x < 0) {
+            sign_arg = -1;
+            x1 = -x1;
+        }
+
+        auto current_term = start_value(x1);
 
         auto result = current_term;
 
         for (auto n = this->start_number; fabs(current_term) > tolerance; n++) {
-            current_term *= multiplier(x, n);
+            current_term *= multiplier(x1, n);
             result += current_term;
             ++(this->count_iterations_);
         }
 
-        return result;
+        return sign_arg > 0 ? result : 1/result;
     }
 }

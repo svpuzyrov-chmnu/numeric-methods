@@ -1,11 +1,4 @@
-﻿#include <iostream>
-#include <iomanip>
-#include "number-sequence-app.hpp"
-
-using std::cin;
-using std::cout;
-using std::endl;
-using std::setprecision;
+﻿#include "number-sequence-app.hpp"
 
 int main() {
 

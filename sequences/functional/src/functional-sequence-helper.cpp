@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-namespace math_helpers {
+namespace math_helpers::sequences::functional {
 	double FunctionalSequenceHelper::compute(const double& x,const double& tolerance)
 	{
 		using std::fabs;
