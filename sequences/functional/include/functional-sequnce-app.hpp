@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <cmath>
 #include "functional-sequence-helper.hpp"
+#include "functional-sequence-teilor.hpp"
 
 void enter_point(const double& a, const double& b, double &x);
 

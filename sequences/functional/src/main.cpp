@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #include <iomanip>
-#include "functional-sequnce.hpp"
+#include "functional-sequnce-app.hpp"
 
 using std::cin;
 using std::cout;

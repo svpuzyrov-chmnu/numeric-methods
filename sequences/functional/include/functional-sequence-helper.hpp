@@ -1,12 +1,11 @@
 ﻿#pragma once
 
+#include "functional-sequence-type.hpp"
+#include "functional-sequence.hpp"
 
 namespace math_helpers {
-    typedef double (*functional_sequence_term_multiplier_t)(const double &, const int &);
 
-    typedef double (*function1_t)(const double &);
-
-    class FunctionalSequenceHelper {
+    class FunctionalSequenceHelper: public virtual FunctionalSequence {
         const function1_t start_value_evaluator_;
         const functional_sequence_term_multiplier_t multiplier_;
         const int start_number;
@@ -20,12 +19,12 @@ namespace math_helpers {
               , count_iterations_(0) {
         }
 
-        virtual ~FunctionalSequenceHelper() = default;
+        ~FunctionalSequenceHelper() override = default;
 
         [[nodiscard]] int count_iterations() const {
             return count_iterations_;
         }
 
-        [[nodiscard]] double compute(const double &x, const double &tolerance = 1e-3);
+        [[nodiscard]] double compute(const double &x, const double &tolerance = 1e-3) override;
     };
 }
