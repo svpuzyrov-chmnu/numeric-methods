@@ -2,6 +2,7 @@
 #include <vector>
 #include <initializer_list>
 #include <iostream>
+#include <functional>
 
 namespace linear_algebra::vector {
 
@@ -13,7 +14,17 @@ namespace linear_algebra::vector {
 
         Vector(const size_t& sz) : data_(sz) {}
 
+        Vector(const size_t& sz, const std::function<double(const size_t&)>& init_func)
+        : data_(sz)
+        {
+            for (size_t i = 0; i < sz; ++i)
+            {
+                data_[i] = init_func(i);
+            }
+        }
+
         Vector(const std::vector<double>& data) : data_(data) {}
+
         Vector(const std::initializer_list<double>& data) : data_(data) {}
 
         Vector(const double* data, const std::size_t& size) : data_(size)
@@ -29,7 +40,7 @@ namespace linear_algebra::vector {
         {
             for (int i = 0; i < size; i++)
             {
-                data_.push_back(data[i]);
+                data_[i] = data[i];
             }
         }
 
