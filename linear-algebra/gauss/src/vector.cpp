@@ -1,11 +1,12 @@
 ﻿#include "vector.hpp"
+#include "exception.hpp"
 
 namespace linear_algebra::vector {
 	void Vector::check_indices(const size_t& i) const
 	{
-		if (i < 0 || i > size())
+		if (i < 0 || i >= size())
 		{
-			throw xInvalidIndex(i);
+			throw exception::xInvalidIndex(i);
 		}
 	}
 

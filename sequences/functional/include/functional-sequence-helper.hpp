@@ -21,7 +21,8 @@ namespace math_helpers::sequences::functional {
 
         ~FunctionalSequenceHelper() override = default;
 
-        [[nodiscard]] int count_iterations() const {
+        [[nodiscard]] int count_iterations() const override
+        {
             return count_iterations_;
         }
 

@@ -2,20 +2,12 @@
 #include <vector>
 #include <initializer_list>
 #include <iostream>
-#include <exception>
 
 namespace linear_algebra::vector {
-    struct xInvalidIndex: std::exception
-    {
-    private:
-        const size_t i;
-    public:
-        explicit xInvalidIndex(const size_t& i) : i(i) {}
-    };
 
     class Vector final {
         std::vector<double> data_;
-        void check_indices(const size_t& i) const;
+        void check_indices(const size_t&) const;
     public:
         Vector() = default;
 
@@ -50,6 +42,8 @@ namespace linear_algebra::vector {
         double& operator[](const size_t& i) { return data_.at(i); }
 
         [[nodiscard]] double at(const size_t& i) const { return data_.at(i); }
+
+        double& at(const size_t& i) { return data_.at(i); }
 
         [[nodiscard]] size_t size() const
         {
