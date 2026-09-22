@@ -32,6 +32,9 @@ namespace linear_algebra::matrix
 
     class Matrix : public virtual ViewMatrix
     {
+        const size_t rows_;
+        const size_t cols_;
+
     protected:
         std::vector<std::shared_ptr<vector::Vector>> data_;
 
@@ -40,7 +43,9 @@ namespace linear_algebra::matrix
     public:
         Matrix(const size_t rows, const size_t cols,
                const std::function<size_t(const size_t&, const size_t&)>& col_size_generator)
-            : data_(rows)
+            : rows_(rows)
+              , cols_(cols)
+              , data_(rows)
         {
             for (size_t i = 0; i < data_.size(); ++i)
             {
@@ -72,12 +77,12 @@ namespace linear_algebra::matrix
 
         [[nodiscard]] const size_t rows() const final
         {
-            return data_.size();
+            return rows_;
         }
 
         [[nodiscard]] const size_t cols() const final
         {
-            return data_.at(0)->size();
+            return cols_;
         }
     };
 
@@ -96,6 +101,7 @@ namespace linear_algebra::matrix
     {
     protected:
         [[nodiscard]] virtual bool is_over_defined(const size_t&, const size_t&) const = 0;
+
     public:
         TriangleMatrix(const size_t rows, const size_t cols,
                        const std::function<size_t(const size_t&, const size_t&)>& col_size_generator)
@@ -130,6 +136,7 @@ namespace linear_algebra::matrix
     {
     protected:
         [[nodiscard]] bool is_over_defined(const size_t&, const size_t&) const override;
+
     public:
         UpperTriangleMatrix(const size_t rows, const size_t cols)
             : TriangleMatrix(rows, cols, [](const auto& c, const auto& j) -> size_t { return c - j; })
@@ -143,6 +150,7 @@ namespace linear_algebra::matrix
     {
     protected:
         [[nodiscard]] bool is_over_defined(const size_t&, const size_t&) const override;
+
     public:
         LowerTriangleMatrix(const size_t rows, const size_t cols)
             : TriangleMatrix(rows, cols, [](const auto& c, const auto& j) -> size_t { return j + 1; })

@@ -1,6 +1,6 @@
 ﻿project("functional-sequence")
 
-file(GLOB SRC src/*.cpp src/*.cxx)
+file(GLOB src src/*.cpp src/*.cxx)
 
 include_directories(include)
 
