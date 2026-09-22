@@ -19,6 +19,16 @@ namespace linear_algebra::matrix {
     {
         check_indices(source_row, 0);
         check_indices(target_row, 0);
+
+        if (source_row != target_row)
+        {
+            const auto source_row_ref = data_.at(source_row);
+            const auto target_row_ref = data_.at(target_row);
+
+            data_.at(source_row) = target_row_ref;
+
+            data_.at(target_row) = source_row_ref;
+        }
     }
 
     bool UpperTriangleMatrix::is_over_defined(const size_t& r, const size_t& c) const

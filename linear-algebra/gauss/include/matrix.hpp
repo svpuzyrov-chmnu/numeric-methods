@@ -58,11 +58,13 @@ namespace linear_algebra::matrix
 
         [[nodiscard]] double at(const size_t& i, const size_t& j) const override
         {
+            check_indices(i, j);
             return data_.at(i)->at(j);
         }
 
         double& operator()(const size_t& i, const size_t& j) override
         {
+            check_indices(i, j);
             return data_.at(i)->at(j);
         }
 
