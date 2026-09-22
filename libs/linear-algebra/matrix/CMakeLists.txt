@@ -1,12 +1,14 @@
 ﻿project("matrix")
 
-file(GLOB src src/*.cpp src/*.cxx)
+file(GLOB SRC src/*.cpp src/*.cxx)
 
 include_directories(include)
 
 add_library(${PROJECT_NAME} ${SRC})
 
 target_link_libraries(${PROJECT_NAME} ${COMMON_DEPS})
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 if (EXISTS "tests")
     file(GLOB TEST_SRC tests/*.cpp tests/*.cxx)
@@ -21,7 +23,6 @@ if (EXISTS "tests")
                 Catch2::Catch2WithMain
         )
         list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
-        include(Catch)
         catch_discover_tests(${TEST_EXE_NAME})
     endif ()
 
