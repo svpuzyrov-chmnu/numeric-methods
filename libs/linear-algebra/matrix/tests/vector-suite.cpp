@@ -6,12 +6,6 @@ TEST_CASE("Vector construction")
 {
     using linear_algebra::vector::Vector;
 
-    SECTION("Default constructor")
-    {
-        Vector v;
-        REQUIRE(v.size() == 0);
-    }
-
     SECTION("Size constructor")
     {
         Vector v(5);

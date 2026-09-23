@@ -10,8 +10,6 @@ namespace linear_algebra::vector {
         std::vector<double> data_;
         void check_indices(const size_t&) const;
     public:
-        Vector() = default;
-
         Vector(const size_t& sz) : data_(sz) {}
 
         Vector(const size_t& sz, const std::function<double(const size_t&)>& init_func)
@@ -29,9 +27,9 @@ namespace linear_algebra::vector {
 
         Vector(const double* data, const std::size_t& size) : data_(size)
         {
-            for (int i = 0; i < size; i++)
+            for (size_t i = 0; i < size; ++i)
             {
-                data_.push_back(data[i]);
+                data_[i] = data[i];
             }
         }
 
