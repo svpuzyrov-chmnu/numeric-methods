@@ -33,6 +33,15 @@ namespace linear_algebra::matrix {
 
     void RectangleMatrix::change_cols(const size_t& i, const size_t& j)
     {
-        Matrix::change_cols(i, j);
+        check_indices(0, i);
+        check_indices(0, j);
+
+        if (i != j)
+        {
+            for (const auto & row_vector : data_)
+            {
+                std::swap(row_vector->at(i), row_vector->at(j));
+            }
+        }
     }
 }

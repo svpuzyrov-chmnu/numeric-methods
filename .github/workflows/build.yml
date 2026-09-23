@@ -1,0 +1,76 @@
+name: Build and test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    name: Build (${{ matrix.compiler }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - compiler: gcc
+            cc: gcc
+            cxx: g++
+          - compiler: clang
+            cc: clang
+            cxx: clang++
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Configure
+        env:
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Upload test executables
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-${{ matrix.compiler }}
+          path: |
+            dist/bin/*-test
+            dist/bin/*-tests
+          if-no-files-found: warn
+
+  test:
+    name: Test (${{ matrix.compiler }})
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler:
+          - gcc
+          - clang
+
+    steps:
+      - name: Download test executables
+        uses: actions/download-artifact@v4
+        with:
+          name: tests-${{ matrix.compiler }}
+          path: dist/bin
+
+      - name: Run tests
+        run: |
+          mapfile -d '' test_files < <(
+            find dist/bin -type f \( -name '*-test' -o -name '*-tests' \) -print0
+          )
+
+          if [ "${#test_files[@]}" -eq 0 ]; then
+            echo "::warning::No test files with a -test suffix were found"
+            exit 0
+          fi
+
+          for test_file in "${test_files[@]}"; do
+            chmod +x "$test_file"
+            "$test_file"
+          done
