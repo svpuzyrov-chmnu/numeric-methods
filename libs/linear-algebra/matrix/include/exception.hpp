@@ -18,4 +18,27 @@ namespace linear_algebra::exception {
     public:
         explicit xOutOfRange(const size_t& row, const size_t& col) : row_(row), col_(col) {}
     };
+
+    struct xImpossibleMatrixOperation : std::exception
+    {
+    };
+
+    struct xNonEqualMatrixDimensions : xImpossibleMatrixOperation
+    {
+    private:
+        const size_t rows_;
+        const size_t cols_;
+
+    public:
+        xNonEqualMatrixDimensions(const size_t rows, const size_t cols)
+            : rows_(rows)
+        , cols_(cols)
+        {
+        }
+
+        [[nodiscard]] const char* what() const noexcept override
+        {
+            return "Matrix dimensions are not equal.";
+        }
+    };
 }

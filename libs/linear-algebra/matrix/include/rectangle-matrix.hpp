@@ -53,9 +53,10 @@ namespace linear_algebra::matrix
             }
         }
 
-        RectangleMatrix(const size_t rows, const size_t cols,
+        RectangleMatrix(const size_t& rows, const size_t& cols,
                         const std::function<bool(const size_t&, const size_t&)>& index_predicate,
-                        const std::function<double(const size_t&, const size_t&)>& value_generator)
+                        const std::function<double(const size_t&, const size_t&)>& value_generator,
+                        const double& default_value = 0.0)
             : rows_(rows)
               , cols_(cols)
               , data_(rows)
@@ -69,6 +70,10 @@ namespace linear_algebra::matrix
                     if (index_predicate(i, j))
                     {
                         data_[i]->at(j) = value_generator(i, j);
+                    }
+                    else
+                    {
+                        data_[i]->at(j) = default_value;
                     }
                 }
             }
@@ -102,4 +107,12 @@ namespace linear_algebra::matrix
             return cols_;
         }
     };
+
+    RectangleMatrix operator+(const RectangleMatrix& lhs, const RectangleMatrix& rhs);
+
+    RectangleMatrix operator-(const RectangleMatrix& lhs, const RectangleMatrix& rhs);
+
+    RectangleMatrix operator*(const RectangleMatrix& lhs, const RectangleMatrix& rhs);
+
+    RectangleMatrix operator*(const RectangleMatrix& lhs, const double& rhs);
 }

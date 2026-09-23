@@ -30,13 +30,14 @@ TEST_CASE("Matrix construction")
         }
     }
 
+    constexpr double data[3][4] = {
+        {1.0, 2.0, 3.0, 4.0},
+        {5.0, 6.0, 7.0, 8.0},
+        {9.0, 10.0, 11.0, 12.0}
+    };
+
     SECTION("Construct with initializer list")
     {
-        constexpr double data[3][4] = {
-            {1.0, 2.0, 3.0, 4.0},
-            {5.0, 6.0, 7.0, 8.0},
-            {9.0, 10.0, 11.0, 12.0}
-        };
 
         RectangleMatrix m = data;
 
@@ -52,17 +53,6 @@ TEST_CASE("Matrix construction")
             }
         }
     }
-}
-
-TEST_CASE("Matrix operations")
-{
-    using linear_algebra::matrix::RectangleMatrix;
-
-    constexpr double data[3][4] = {
-        {1.0, 2.0, 3.0, 4.0},
-        {5.0, 6.0, 7.0, 8.0},
-        {9.0, 10.0, 11.0, 12.0}
-    };
 
     SECTION("Change rows")
     {

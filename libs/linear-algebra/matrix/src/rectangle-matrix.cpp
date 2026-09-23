@@ -1,7 +1,9 @@
-﻿#include "rectangle-matrix.hpp"
+﻿#include <cmath>
+#include "rectangle-matrix.hpp"
 #include "exception.hpp"
 
-namespace linear_algebra::matrix {
+namespace linear_algebra::matrix
+{
     void RectangleMatrix::check_indices(const size_t& i, const size_t& j) const
     {
         if (i < 0 || i >= data_.size())
@@ -38,10 +40,72 @@ namespace linear_algebra::matrix {
 
         if (i != j)
         {
-            for (const auto & row_vector : data_)
+            for (const auto& row_vector : data_)
             {
                 std::swap(row_vector->at(i), row_vector->at(j));
             }
         }
+    }
+
+    static auto true_index_predicate = [](const size_t& i, const size_t& j) { return true; };
+
+    RectangleMatrix operator+(const RectangleMatrix& lhs, const RectangleMatrix& rhs)
+    {
+        const auto rows = std::min(lhs.rows(), rhs.rows());
+        const auto cols = std::min(lhs.cols(), rhs.cols());
+
+        RectangleMatrix result(rows, cols,
+                               true_index_predicate,
+                               [&lhs, &rhs](const size_t& i, const size_t& j) { return lhs(i, j) + rhs(i, j); }
+        );
+
+        return result;
+    }
+
+    RectangleMatrix operator-(const RectangleMatrix& lhs, const RectangleMatrix& rhs)
+    {
+        const auto rows = std::min(lhs.rows(), rhs.rows());
+        const auto cols = std::min(lhs.cols(), rhs.cols());
+
+        RectangleMatrix result(rows, cols,
+                               true_index_predicate,
+                               [&lhs, &rhs](auto& i, auto& j) { return lhs(i, j) - rhs(i, j); }
+        );
+
+        return result;
+    }
+
+    RectangleMatrix operator*(const RectangleMatrix& lhs, const RectangleMatrix& rhs)
+    {
+        if (lhs.cols() != rhs.rows())
+        {
+            throw exception::xNonEqualMatrixDimensions(lhs.cols(), rhs.rows());
+        }
+
+        const auto rows = lhs.rows();
+        const auto cols = rhs.cols();
+
+        auto value_generator = [&lhs, &rhs](auto& i, auto& j)
+        {
+            double sum = 0.0;
+            for (size_t k = 0; k < lhs.cols(); ++k)
+            {
+                sum += lhs(i, k) * rhs(k, j);
+            }
+            return sum;
+        };
+
+        RectangleMatrix result(rows, cols, true_index_predicate, value_generator);
+
+        return result;
+    }
+
+    RectangleMatrix operator*(const RectangleMatrix& lhs, const double& rhs)
+    {
+        RectangleMatrix result(lhs.rows(), lhs.cols(), true_index_predicate,
+                               [&lhs, &rhs](const size_t& i, const size_t& j) { return lhs(i, j) * rhs; }
+        );
+
+        return result;
     }
 }
