@@ -12,6 +12,10 @@ namespace linear_algebra::vector {
     public:
         Vector(const size_t& sz) : data_(sz) {}
 
+        Vector(const Vector& rhs) = default;
+
+        Vector(Vector&& rhs) = default;
+
         Vector(const size_t& sz, const std::function<double(const size_t&)>& init_func)
         : data_(sz)
         {

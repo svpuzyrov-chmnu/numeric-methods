@@ -3,7 +3,7 @@
 #include <memory>
 #include <functional>
 #include "vector.hpp"
-#include "matrix.hpp"
+#include "gauss.hpp"
 
 namespace linear_algebra::matrix
 {
@@ -17,24 +17,18 @@ namespace linear_algebra::matrix
 
         void check_indices(const size_t&, const size_t&) const;
 
-        RectangleMatrix(const size_t rows, const size_t cols,
-                        const std::function<size_t(const size_t&, const size_t&)>& col_size_generator)
-            : rows_(rows)
-              , cols_(cols)
-              , data_(rows)
-        {
-            for (size_t i = 0; i < rows; ++i)
-            {
-                const auto col_size = col_size_generator(cols, i);
-                data_[i] = std::make_shared<vector::Vector>(col_size);
-            }
-        }
+        RectangleMatrix(const size_t&, const size_t&,
+                        const std::function<size_t(const size_t&, const size_t&)>& col_size_generator);
 
     public:
         RectangleMatrix(const size_t rows, const size_t cols)
             : RectangleMatrix(rows, cols, [](auto& c, auto& j) -> size_t { return c; })
         {
         }
+
+        RectangleMatrix(const RectangleMatrix& rhs);
+
+        RectangleMatrix(RectangleMatrix&& rhs) = default;
 
         template<size_t rows, size_t cols>
         RectangleMatrix(const double (&data)[rows][cols])
@@ -56,28 +50,7 @@ namespace linear_algebra::matrix
         RectangleMatrix(const size_t& rows, const size_t& cols,
                         const std::function<bool(const size_t&, const size_t&)>& index_predicate,
                         const std::function<double(const size_t&, const size_t&)>& value_generator,
-                        const double& default_value = 0.0)
-            : rows_(rows)
-              , cols_(cols)
-              , data_(rows)
-        {
-            for (size_t i = 0; i < rows; ++i)
-            {
-                data_[i] = std::make_shared<vector::Vector>(cols);
-
-                for (size_t j = 0; j < cols; ++j)
-                {
-                    if (index_predicate(i, j))
-                    {
-                        data_[i]->at(j) = value_generator(i, j);
-                    }
-                    else
-                    {
-                        data_[i]->at(j) = default_value;
-                    }
-                }
-            }
-        }
+                        const double& default_value = 0.0);
 
         ~RectangleMatrix() override = default;
 
@@ -92,6 +65,8 @@ namespace linear_algebra::matrix
             check_indices(i, j);
             return data_.at(i)->at(j);
         }
+
+        [[nodiscard]] size_t index_of_max_abs_in_col(const size_t& col, const size_t& start_row = 0) const;
 
         void change_rows(const size_t&, const size_t&) override;
 
@@ -115,4 +90,6 @@ namespace linear_algebra::matrix
     RectangleMatrix operator*(const RectangleMatrix& lhs, const RectangleMatrix& rhs);
 
     RectangleMatrix operator*(const RectangleMatrix& lhs, const double& rhs);
+
+    vector::Vector operator*(const RectangleMatrix& lhs, const vector::Vector& rhs);
 }

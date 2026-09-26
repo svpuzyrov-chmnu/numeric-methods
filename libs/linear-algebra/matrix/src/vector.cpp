@@ -1,5 +1,5 @@
 ﻿#include "vector.hpp"
-#include "exception.hpp"
+#include "matrix-exception.hpp"
 
 namespace linear_algebra::vector {
 	void Vector::check_indices(const size_t& i) const

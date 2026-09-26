@@ -1,4 +1,4 @@
-﻿project("gauss")
+﻿project("gauss-app")
 
 file(GLOB SRC src/*.cpp src/*.cxx)
 

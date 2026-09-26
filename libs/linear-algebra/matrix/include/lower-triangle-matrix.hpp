@@ -8,13 +8,22 @@ namespace linear_algebra::matrix
     {
     protected:
         [[nodiscard]] bool is_over_defined(const size_t&, const size_t&) const override;
+        [[nodiscard]] size_t stored_col_index(const size_t&, const size_t& col) const override
+        {
+            return col;
+        }
 
     public:
         LowerTriangleMatrix(const size_t rows, const size_t cols)
-            : TriangleMatrix(rows, cols, [](const auto& c, const auto& j) -> size_t { return j + 1; })
+            : TriangleMatrix(rows, cols, [&cols](const auto&, const auto& row) -> size_t
+            {
+                return row < cols ? row + 1 : cols;
+            })
         {
         }
 
         ~LowerTriangleMatrix() override = default;
+
+        void init_row(const size_t&, const std::function<double(const size_t&, const size_t&)>&) override;
     };
 }

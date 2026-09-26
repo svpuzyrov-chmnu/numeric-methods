@@ -1,4 +1,4 @@
-﻿#include "matrix.hpp"
+﻿#include "gauss.hpp"
 #include <iomanip>
 
 namespace linear_algebra::matrix
@@ -11,6 +11,7 @@ namespace linear_algebra::matrix
             {
                 os << std::setw(10) << std::setprecision(5) << m(i, j);
             }
+            os << std::endl;
         }
         return os;
     }

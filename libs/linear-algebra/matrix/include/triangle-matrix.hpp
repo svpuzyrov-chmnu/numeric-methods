@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <vector>
 #include "rectangle-matrix.hpp"
-#include "exception.hpp"
+#include "matrix-exception.hpp"
 
 namespace linear_algebra::matrix
 {
@@ -16,6 +16,7 @@ namespace linear_algebra::matrix
     {
     protected:
         [[nodiscard]] virtual bool is_over_defined(const size_t&, const size_t&) const = 0;
+        [[nodiscard]] virtual size_t stored_col_index(const size_t&, const size_t&) const = 0;
 
     public:
         TriangleMatrix(const size_t rows, const size_t cols,
@@ -28,23 +29,32 @@ namespace linear_algebra::matrix
 
         [[nodiscard]] double at(const size_t& i, const size_t& j) const override
         {
+            check_indices(i, j);
             if (is_over_defined(i, j))
             {
                 return 0;
             }
 
-            return data_.at(i)->at(j);
+            return data_.at(i)->at(stored_col_index(i, j));
+        }
+
+        double operator()(const size_t& i, const size_t& j) const override
+        {
+            return at(i, j);
         }
 
         double& operator()(const size_t& i, const size_t& j) override
         {
+            check_indices(i, j);
             if (is_over_defined(i, j))
             {
                 throw exception::xOutOfRange{i, j};
             }
 
-            return data_.at(i)->at(j);
+            return data_.at(i)->at(stored_col_index(i, j));
         }
+
+        virtual void init_row(const size_t&, const std::function<double(const size_t&, const size_t&)>&) = 0;
 
         void change_rows(const size_t& i, const size_t& j) override
         {
