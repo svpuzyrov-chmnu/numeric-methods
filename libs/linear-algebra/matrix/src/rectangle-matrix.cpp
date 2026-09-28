@@ -22,10 +22,10 @@ namespace linear_algebra::matrix
           , cols_(rhs.cols_)
           , data_(rhs.data_)
     {
-        for (auto i = 0; i < rows_; ++i)
+        for (size_t i = 0; i < rows_; ++i)
         {
             data_[i] = std::make_shared<vector::Vector>(cols_);
-            for (auto j = 0; j < cols_; ++j)
+            for (size_t j = 0; j < cols_; ++j)
             {
                 data_.at(i)->at(j) = rhs.data_.at(i)->at(j);
             }
