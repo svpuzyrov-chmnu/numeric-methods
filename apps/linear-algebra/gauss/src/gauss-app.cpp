@@ -17,20 +17,30 @@ void process_linear_by_gauss()
 
     RectangleMatrix coefficients = raw_m;
 
-    Vector right_side_v { 2.5603, -10.1311, 8.5549, 18.4019};
+    Vector rhs { 2.5603, -10.1311, 8.5549, 18.4019};
 
     cout << coefficients << endl;
-    cout << right_side_v << endl;
+    cout << rhs << endl;
 
-    auto resolver = PartialGaussResolver{};
+    const PartialGaussResolver resolver;
 
-    auto solution = resolver.resolve(coefficients, right_side_v);
+    auto solution = resolver.resolve(coefficients, rhs);
 
     cout << endl << "Solution:" << solution << endl;
 
     cout << endl << "Validate:" << coefficients * solution << endl;
    
-    cout << endl << "Deviate:" << resolver.deviate(coefficients, solution, right_side_v) << endl;
+    cout << endl << "Deviate:" << resolver.deviate(coefficients, solution, rhs) << endl;
 
     cout << endl << "Determinant:" << resolver.determinant(coefficients) << endl;
+
+    auto inverse_m = resolver.inverse(coefficients);
+
+    cout << "Inverse matrix:" << endl << inverse_m  << endl;
+
+    cout << "Product of source and inverse matrix from left to right or right to left should produce identity matrix" << endl;
+
+    auto identity = coefficients * inverse_m;
+    cout << identity << endl;
+
 }

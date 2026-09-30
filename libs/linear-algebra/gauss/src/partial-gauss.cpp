@@ -138,6 +138,7 @@ namespace linear_algebra::gauss
             }
         }
 
+
         double result = 1.0;
 
         for (size_t row = 0; row < size; ++row)
@@ -165,6 +166,7 @@ namespace linear_algebra::gauss
             if (auto pivot_row = work.index_of_max_abs_in_col(row, row); pivot_row > row)
             {
                 work.change_rows(pivot_row, row);
+                identity.change_rows(pivot_row, row);
             }
 
             if (std::abs(m(row, row)) <= std::numeric_limits<double>::epsilon())
@@ -194,27 +196,29 @@ namespace linear_algebra::gauss
         {
             for (size_t next_row = row - 1; next_row > 0; --next_row)
             {
-                const auto factor = work(next_row, row - 1) / work(row - 1, row - 1);
+                const auto factor = work(next_row - 1, row - 1) / work(row - 1, row - 1);
 
-                work(next_row, row - 1) = 0.0;
+                work(next_row - 1, row - 1) = 0.0;
 
-                for (size_t col = row; col > 0; --col)
+                for (size_t col = size; col >= row; --col)
                 {
                     work(next_row - 1, col - 1) -= factor * work(row - 1, col - 1);
                 }
 
-                for (size_t col = 0; col < size; ++col)
+                for (size_t col = size; col > 0; --col)
                 {
-                    identity(next_row, col) -= factor * identity(row, col);
+                    identity(next_row - 1, col - 1) -= factor * identity(row - 1, col - 1);
                 }
             }
         }
 
         for (size_t row = 0; row < size; ++row)
         {
+            const auto divider =  work(row, row);
+
             for (size_t col = 0; col < size; ++col)
             {
-                identity(row, col) /= work(row, col);
+                identity(row, col) /= divider;
             }
         }
 

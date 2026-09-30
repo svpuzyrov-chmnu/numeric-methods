@@ -9,8 +9,8 @@ namespace linear_algebra::matrix
 {
     class RectangleMatrix : public virtual IMatrix
     {
-        const size_t rows_;
-        const size_t cols_;
+        size_t rows_;
+        size_t cols_;
 
     protected:
         std::vector<std::shared_ptr<vector::Vector>> data_;
@@ -55,7 +55,7 @@ namespace linear_algebra::matrix
         ~RectangleMatrix() override = default;
 
         template<size_t rows, size_t cols>
-        RectangleMatrix* operator=(const double(&data)[rows][cols])
+        RectangleMatrix& operator=(const double(&data)[rows][cols])
         {
             data_.resize(rows);
             rows_ = rows;
@@ -70,6 +70,8 @@ namespace linear_algebra::matrix
                     data_[i]->at(j) = data[i][j];
                 }
             }
+
+            return *this;
         }
 
         [[nodiscard]] double at(const size_t& i, const size_t& j) const override
