@@ -4,12 +4,12 @@
 
 namespace linear_algebra::matrix
 {
-    class Matrix
+    class IMatrix
     {
     public:
-        Matrix() = default;
+        IMatrix() = default;
 
-        virtual ~Matrix() = default;
+        virtual ~IMatrix() = default;
 
         [[nodiscard]] virtual double at(const size_t& i, const size_t& j) const = 0;
 
@@ -33,5 +33,5 @@ namespace linear_algebra::matrix
         [[nodiscard]] virtual const size_t cols() const = 0;
     };
 
-    std::ostream& operator<<(std::ostream& os, const Matrix& m);
+    std::ostream& operator<<(std::ostream& os, const IMatrix& m);
 }

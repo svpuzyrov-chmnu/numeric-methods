@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "gauss.hpp"
+#include "matrix.hpp"
 #include "rectangle-matrix.hpp"
 #include "triangle-matrix.hpp"
 #include "upper-triangle-matrix.hpp"

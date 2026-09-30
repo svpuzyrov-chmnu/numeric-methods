@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "vector.hpp"
-#include "gauss.hpp"
+#include "matrix-all.hpp"
+#include "gauss-all.hpp"
 
-void process_vectors();
+void process_linear_by_gauss();
