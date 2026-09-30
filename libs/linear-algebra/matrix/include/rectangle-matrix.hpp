@@ -3,11 +3,11 @@
 #include <memory>
 #include <functional>
 #include "vector.hpp"
-#include "gauss.hpp"
+#include "matrix.hpp"
 
 namespace linear_algebra::matrix
 {
-    class RectangleMatrix : public virtual Matrix
+    class RectangleMatrix : public virtual IMatrix
     {
         const size_t rows_;
         const size_t cols_;
@@ -53,6 +53,24 @@ namespace linear_algebra::matrix
                         const double& default_value = 0.0);
 
         ~RectangleMatrix() override = default;
+
+        template<size_t rows, size_t cols>
+        RectangleMatrix* operator=(const double(&data)[rows][cols])
+        {
+            data_.resize(rows);
+            rows_ = rows;
+            cols_ = cols;
+
+            for (size_t i = 0; i < rows; ++i)
+            {
+                data_[i] = std::make_shared<vector::Vector>(cols);
+
+                for (size_t j = 0; j < cols; ++j)
+                {
+                    data_[i]->at(j) = data[i][j];
+                }
+            }
+        }
 
         [[nodiscard]] double at(const size_t& i, const size_t& j) const override
         {

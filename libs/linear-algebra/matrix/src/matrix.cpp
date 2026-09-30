@@ -1,9 +1,9 @@
-﻿#include "gauss.hpp"
+﻿#include "matrix.hpp"
 #include <iomanip>
 
 namespace linear_algebra::matrix
 {
-    std::ostream& operator<<(std::ostream& os, const Matrix& m)
+    std::ostream& operator<<(std::ostream& os, const IMatrix& m)
     {
         for (size_t i = 0; i < m.rows(); ++i)
         {

@@ -15,6 +15,32 @@ using linear_algebra::vector::Vector;
 
 namespace
 {
+    TEST_CASE("Partial Gauss resolver solves pivoting systems of the system size 4")
+    {
+        double raw_m[4][4] = {
+            {-27.1489, -27.0561, 4.2419, -44.6195},
+            {2.4671, -40.5327, 39.1517, -35.3451},
+            {43.1613, -45.291, -16.3577, -10.1397},
+            {44.6162, 3.4236, 19.3524, -24.0845},
+        };
+
+        RectangleMatrix coefficients = raw_m;
+
+        Vector right_side_v { 2.5603, -10.1311, 8.5549, 18.4019};
+
+        auto solution = PartialGaussResolver{}.resolve(coefficients, right_side_v);
+
+        auto actual_rhs =
+
+
+        REQUIRE(solution.size() == size);
+        for (size_t i = 0; i < size; ++i)
+        {
+            REQUIRE(solution[i] == Catch::Approx(expected[i]));
+        }
+
+    }
+
     RectangleMatrix make_pivoting_matrix(const size_t size)
     {
         return RectangleMatrix(

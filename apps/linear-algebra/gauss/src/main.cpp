@@ -2,7 +2,7 @@
 
 int main() {
 
-    process_vectors();
+    process_linear_by_gauss();
 
     return 0;
 }
