@@ -1,5 +1,4 @@
 #include "partial-gauss.hpp"
-#include "gauss-exception.hpp"
 #include <cmath>
 #include <limits>
 #include <stdexcept>
@@ -9,23 +8,6 @@
 
 namespace linear_algebra::gauss
 {
-    void PartialGaussResolver::validate(const matrix::RectangleMatrix& m, const vector::Vector& v, const size_t& row)
-    {
-        if (!std::isfinite(v[row]) || !std::isfinite(m(row, row)))
-        {
-            throw std::invalid_argument("Gauss solver requires all finite items.");
-        }
-
-        if (std::abs(m(row, row)) <= std::numeric_limits<double>::epsilon())
-        {
-            if (std::abs(v[row]) > std::numeric_limits<double>::epsilon())
-            {
-                throw exception::xNoSolution();
-            }
-            throw exception::xInfinitySolution();
-        }
-    }
-
     vector::Vector PartialGaussResolver::resolve(const matrix::RectangleMatrix& m, const vector::Vector& v) const
     {
         if (m.rows() != m.cols() || v.size() != m.rows())
@@ -52,7 +34,7 @@ namespace linear_algebra::gauss
                 std::swap(rhs[pivot_row], rhs[row]);
             }
 
-            validate(work, rhs, row);
+            validate_at(work, rhs, row);
 
             for (size_t next_row = row + 1; next_row < size; ++next_row)
             {
@@ -68,7 +50,7 @@ namespace linear_algebra::gauss
             }
         }
 
-        validate(work, rhs, size - 1);
+        validate_at(work, rhs, size - 1);
 
         vector::Vector solution(size);
 
@@ -89,12 +71,12 @@ namespace linear_algebra::gauss
 
     vector::Vector PartialGaussResolver::deviate(const matrix::RectangleMatrix& m, const vector::Vector& x, const vector::Vector& b) const
     {
-        auto b1 = m * x;
+        const auto b1 = m * x;
 
         return b - b1;
     }
 
-    double PartialGaussResolver::determinant(const matrix::RectangleMatrix& m) const
+    double PartialGaussDeterminantResolver::determinant(const matrix::RectangleMatrix& m) const
     {
         if (m.rows() != m.cols())
         {
@@ -149,7 +131,7 @@ namespace linear_algebra::gauss
         return sign * result;
     }
 
-    matrix::RectangleMatrix PartialGaussResolver::inverse(const matrix::RectangleMatrix& m) const
+    matrix::RectangleMatrix PartialGaussInverseMatrixResolver::inverse(const matrix::RectangleMatrix& m) const
     {
         if (m.rows() != m.cols())
         {

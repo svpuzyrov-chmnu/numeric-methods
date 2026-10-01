@@ -7,6 +7,8 @@ void process_linear_by_gauss()
     using linear_algebra::matrix::RectangleMatrix;
     using linear_algebra::vector::Vector;
     using linear_algebra::gauss::PartialGaussResolver;
+    using linear_algebra::gauss::PartialGaussDeterminantResolver;
+    using linear_algebra::gauss::PartialGaussInverseMatrixResolver;
 
     double raw_m[4][4] = {
         {-27.1489, -27.0561, 4.2419, -44.6195},
@@ -17,30 +19,33 @@ void process_linear_by_gauss()
 
     RectangleMatrix coefficients = raw_m;
 
-    Vector rhs { 2.5603, -10.1311, 8.5549, 18.4019};
+    const Vector rhs { 2.5603, -10.1311, 8.5549, 18.4019};
 
     cout << coefficients << endl;
     cout << rhs << endl;
 
-    const PartialGaussResolver resolver;
+    const PartialGaussResolver system_resolver;
+    const PartialGaussDeterminantResolver determinant_resolver;
+    const PartialGaussInverseMatrixResolver inverse_resolver;
 
-    auto solution = resolver.resolve(coefficients, rhs);
+    const auto solution = system_resolver.resolve(coefficients, rhs);
 
     cout << endl << "Solution:" << solution << endl;
 
     cout << endl << "Validate:" << coefficients * solution << endl;
    
-    cout << endl << "Deviate:" << resolver.deviate(coefficients, solution, rhs) << endl;
+    cout << endl << "Deviate:" << system_resolver.deviate(coefficients, solution, rhs) << endl;
 
-    cout << endl << "Determinant:" << resolver.determinant(coefficients) << endl;
+    cout << endl << "Determinant:" << determinant_resolver.determinant(coefficients) << endl;
 
-    auto inverse_m = resolver.inverse(coefficients);
+    const auto inverse_m = inverse_resolver.inverse(coefficients);
 
     cout << "Inverse matrix:" << endl << inverse_m  << endl;
 
     cout << "Product of source and inverse matrix from left to right or right to left should produce identity matrix" << endl;
 
-    auto identity = coefficients * inverse_m;
+    const auto identity = coefficients * inverse_m;
+
     cout << identity << endl;
 
 }

@@ -1,4 +1,4 @@
-﻿project("gauss")
+﻿project("gauss-seidel")
 
 file(GLOB SRC src/*.cpp src/*.cxx)
 
@@ -6,7 +6,7 @@ include_directories(include)
 
 add_library(${PROJECT_NAME} ${SRC})
 
-set(DOMAIN_DEPS matrix linear-core)
+set(DOMAIN_DEPS matrix linear-core seidel)
 
 target_link_libraries(${PROJECT_NAME} ${COMMON_DEPS} ${DOMAIN_DEPS})
 

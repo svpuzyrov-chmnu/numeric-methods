@@ -1,4 +1,4 @@
-﻿project("gauss")
+﻿project("seidel")
 
 file(GLOB SRC src/*.cpp src/*.cxx)
 
