@@ -1,2 +1,5 @@
-﻿add_subdirectory("matrix")
+﻿add_subdirectory("core")
+add_subdirectory("matrix")
 add_subdirectory("gauss")
+add_subdirectory("seidel")
+add_subdirectory("gauss-seidel")

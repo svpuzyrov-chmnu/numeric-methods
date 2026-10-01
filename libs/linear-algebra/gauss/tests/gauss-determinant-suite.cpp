@@ -2,14 +2,16 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
-#include "gauss-all.hpp"
+#include "partial-gauss.hpp"
 #include "matrix-all.hpp"
 
-using linear_algebra::gauss::PartialGaussResolver;
+using linear_algebra::gauss::PartialGaussDeterminantResolver;
 using linear_algebra::matrix::RectangleMatrix;
 using linear_algebra::vector::Vector;
 
 namespace {
+    const PartialGaussDeterminantResolver resolver;
+
     double raw_m_4x4[][4] = {
         {-27.1489, -27.0561, 4.2419, -44.6195},
         {2.4671, -40.5327, 39.1517, -35.3451},
@@ -30,9 +32,9 @@ TEST_CASE("Partial Gauss resolver solves determinant of matrix") {
     SECTION("Partial Gauss resolver solves determinant of matrix size 4") {
         RectangleMatrix coefficients = raw_m_4x4;
 
-        auto expected = 6.33724e+6;
+        constexpr auto expected = 6.33724e+6;
 
-        auto actual = PartialGaussResolver{}.determinant(coefficients);
+        const auto actual = resolver.determinant(coefficients);
 
         REQUIRE(expected == Catch::Approx(actual));
     }
@@ -40,9 +42,9 @@ TEST_CASE("Partial Gauss resolver solves determinant of matrix") {
     SECTION("Partial Gauss resolver solves determinant of matrix size 5") {
         RectangleMatrix coefficients = raw_m5x5;
 
-        auto expected = -1.08959e+5;
+        constexpr auto expected = -1.08959e+5;
 
-        auto actual = PartialGaussResolver{}.determinant(coefficients);
+        const auto actual = resolver.determinant(coefficients);
 
         REQUIRE(expected == Catch::Approx(actual));
     }

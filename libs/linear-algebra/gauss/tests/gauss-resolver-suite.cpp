@@ -2,9 +2,8 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
-#include "gauss-all.hpp"
+#include "partial-gauss.hpp"
 #include "matrix-all.hpp"
-#include "gauss-exception.hpp"
 
 #include <limits>
 #include <stdexcept>
@@ -17,7 +16,7 @@ namespace {
     const PartialGaussResolver resolver;
 
     RectangleMatrix make_pivoting_matrix(const size_t size) {
-        return RectangleMatrix(
+        return RectangleMatrix {
             size,
             size,
             [](const size_t &, const size_t &) { return true; },
@@ -27,7 +26,7 @@ namespace {
                 }
                 return row == col ? 2.0 : 0.0;
             }
-        );
+        };
     }
 
     Vector make_right_hand_side(const RectangleMatrix &coefficients, const Vector &expected) {
@@ -111,7 +110,7 @@ TEST_CASE("Partial Gauss resolver solves pivoting systems of sizes 2 through 5")
 }
 
 TEST_CASE("Partial Gauss resolver handles systems without a row swap") {
-    const double data[3][3] = {
+    constexpr double data[3][3] = {
         {4.0, 1.0, -1.0},
         {2.0, 5.0, 1.0},
         {1.0, -2.0, 6.0}
@@ -132,29 +131,29 @@ TEST_CASE("Partial Gauss resolver handles systems without a row swap") {
 
 TEST_CASE("Partial Gauss resolver classifies singular systems") {
     SECTION("Reports infinitely many solutions") {
-        const double data[2][2] = {{1.0, 1.0}, {2.0, 2.0}};
+        constexpr double data[2][2] = {{1.0, 1.0}, {2.0, 2.0}};
         const RectangleMatrix coefficients(data);
 
         REQUIRE_THROWS_AS(
             resolver.resolve(coefficients, Vector{2.0, 4.0}),
-            linear_algebra::gauss::exception::xInfinitySolution
+            linear_algebra::linear_core::xInfinitySolution
         );
     }
 
     SECTION("Reports no solution") {
-        const double data[2][2] = {{1.0, 1.0}, {2.0, 2.0}};
+        constexpr double data[2][2] = {{1.0, 1.0}, {2.0, 2.0}};
         const RectangleMatrix coefficients(data);
 
         REQUIRE_THROWS_AS(
             resolver.resolve(coefficients, Vector{2.0, 5.0}),
-            linear_algebra::gauss::exception::xNoSolution
+            linear_algebra::linear_core::xNoSolution
         );
     }
 }
 
 TEST_CASE("Partial Gauss resolver validates dimensions and finite diagonal inputs") {
     SECTION("Rejects non-square matrices") {
-        const double data[2][3] = {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}};
+        constexpr double data[2][3] = {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}};
         const RectangleMatrix coefficients(data);
 
         REQUIRE_THROWS_AS(
@@ -173,7 +172,7 @@ TEST_CASE("Partial Gauss resolver validates dimensions and finite diagonal input
     }
 
     SECTION("Rejects non-finite diagonal coefficients") {
-        const double data[1][1] = {{std::numeric_limits<double>::infinity()}};
+        constexpr double data[1][1] = {{std::numeric_limits<double>::infinity()}};
         const RectangleMatrix coefficients(data);
 
         REQUIRE_THROWS_AS(
@@ -183,7 +182,7 @@ TEST_CASE("Partial Gauss resolver validates dimensions and finite diagonal input
     }
 
     SECTION("Rejects non-finite right-hand-side values") {
-        const double data[1][1] = {{1.0}};
+        constexpr double data[1][1] = {{1.0}};
         const RectangleMatrix coefficients(data);
 
         REQUIRE_THROWS_AS(

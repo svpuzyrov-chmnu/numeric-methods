@@ -2,21 +2,18 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
-#include "gauss-all.hpp"
+#include "partial-gauss.hpp"
 #include "matrix-all.hpp"
-#include "gauss-exception.hpp"
-
-#include <stdexcept>
 
 #include "catch2/matchers/catch_matchers.hpp"
 #include "catch2/matchers/catch_matchers_floating_point.hpp"
 
-using linear_algebra::gauss::PartialGaussResolver;
+using linear_algebra::gauss::PartialGaussInverseMatrixResolver;
 using linear_algebra::matrix::RectangleMatrix;
 using linear_algebra::vector::Vector;
 
 namespace {
-    const PartialGaussResolver resolver;
+    const PartialGaussInverseMatrixResolver resolver;
 
     double raw_m_4x4[][4] = {
         {-27.1489, -27.0561, 4.2419, -44.6195},
