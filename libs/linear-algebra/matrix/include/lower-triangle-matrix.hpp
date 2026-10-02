@@ -14,6 +14,10 @@ namespace linear_algebra::matrix
         }
 
     public:
+        LowerTriangleMatrix(const LowerTriangleMatrix&) = default;
+
+        LowerTriangleMatrix(LowerTriangleMatrix&&) = default;
+
         LowerTriangleMatrix(const size_t rows, const size_t cols)
             : TriangleMatrix(rows, cols, [&cols](const auto&, const auto& row) -> size_t
             {

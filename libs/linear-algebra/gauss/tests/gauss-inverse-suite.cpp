@@ -15,11 +15,18 @@ using linear_algebra::vector::Vector;
 namespace {
     const PartialGaussInverseMatrixResolver resolver;
 
-    double raw_m_4x4[][4] = {
+    double raw_m1_4x4[][4] = {
         {-27.1489, -27.0561, 4.2419, -44.6195},
         {2.4671, -40.5327, 39.1517, -35.3451},
         {43.1613, -45.291, -16.3577, -10.1397},
         {44.6162, 3.4236, 19.3524, -24.0845},
+    };
+
+    double raw_m2_4x4[][4] = {
+        {5, 4, 0, -7},
+        {-4, 2, -1, 6},
+        {1, 10, 3, 2},
+        {3, 7, 5, -3},
     };
 
     double raw_m5x5[][5] = {
@@ -33,11 +40,27 @@ namespace {
 
 TEST_CASE("Partial Gauss resolver solves pivoting systems to determine inverse matrix") {
 
-    SECTION("Partial Gauss resolver solves pivoting systems to determine inverse matrix of size 4") {
-        RectangleMatrix source = raw_m_4x4;
+    SECTION("Partial Gauss resolver solves pivoting systems to determine inverse double matrix of size 4") {
+        RectangleMatrix source = raw_m1_4x4;
 
         auto inverse = resolver.inverse(source);
 
+        auto identity = inverse * source ;
+
+        for (size_t i = 0; i < identity.rows(); ++i) {
+            for (size_t j = 0; j < identity.cols(); ++j) {
+                auto expected = (i == j) ? 1.0 : 0.0;
+                REQUIRE_THAT(expected, Catch::Matchers::WithinAbs(identity(i, j), 1e-9));
+            }
+        }
+    }
+
+    SECTION("Partial Gauss resolver solves pivoting systems to determine inverse int matrix of size 4") {
+        RectangleMatrix source = raw_m2_4x4;
+
+        auto inverse = resolver.inverse(source);
+
+        std::cout <<"Inverse of int matrix" << std::endl << inverse << std::endl;
         auto identity = inverse * source ;
 
         for (size_t i = 0; i < identity.rows(); ++i) {

@@ -151,7 +151,7 @@ namespace linear_algebra::gauss
                 identity.change_rows(pivot_row, row);
             }
 
-            if (std::abs(m(row, row)) <= std::numeric_limits<double>::epsilon())
+            if (std::abs(work(row, row)) <= std::numeric_limits<double>::epsilon())
             {
                 throw std::runtime_error("Inverse matrix is not defined.");
             }

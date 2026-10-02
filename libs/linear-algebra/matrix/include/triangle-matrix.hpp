@@ -19,6 +19,10 @@ namespace linear_algebra::matrix
         [[nodiscard]] virtual size_t stored_col_index(const size_t&, const size_t&) const = 0;
 
     public:
+        TriangleMatrix(const TriangleMatrix&) = default;
+
+        TriangleMatrix(TriangleMatrix&&) = default;
+
         TriangleMatrix(const size_t rows, const size_t cols,
                        const std::function<size_t(const size_t&, const size_t&)>& col_size_generator)
             : RectangleMatrix(rows, cols, col_size_generator)
