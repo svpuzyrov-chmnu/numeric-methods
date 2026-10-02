@@ -13,6 +13,10 @@ namespace linear_algebra::matrix
         }
 
     public:
+        UpperTriangleMatrix(const UpperTriangleMatrix&) = default;
+
+        UpperTriangleMatrix(UpperTriangleMatrix&&) = default;
+
         UpperTriangleMatrix(const size_t rows, const size_t cols)
             : TriangleMatrix(rows, cols, [&cols](const auto&, const auto& row) -> size_t
             {
