@@ -16,9 +16,9 @@ namespace linear_algebra::matrix::decomposition::lu
         const auto size = m.rows();
 
         MatrixDecompositionResult result {
-            .lower = LowerTriangleMatrix(size, size),
-            .upper = UpperTriangleMatrix(size, size),
-            .pivot_indices = std::vector<size_t>(size)
+            LowerTriangleMatrix(size, size),
+            UpperTriangleMatrix(size, size),
+            std::vector<size_t>(size)
         };
 
         std::iota(result.pivot_indices.begin(), result.pivot_indices.end(), 0);
@@ -63,7 +63,7 @@ namespace linear_algebra::matrix::decomposition::lu
 
             for (size_t row = pivot_col + 1; row < size; ++row)
             {
-                const auto factor = m(row, pivot_col) / result.upper(pivot_col, pivot_col);
+                const auto factor = -m(row, pivot_col) / result.upper(pivot_col, pivot_col);
 
                 if (!std::isfinite(factor))
                 {
@@ -74,7 +74,7 @@ namespace linear_algebra::matrix::decomposition::lu
 
                 for (size_t col = pivot_col + 1; col < size; ++col)
                 {
-                    m(row, col) -= factor * result.upper(pivot_col, col);
+                    m(row, col) += factor * result.upper(pivot_col, col);
                     if (!std::isfinite(m(row, col)))
                     {
                         throw std::runtime_error("LU decomposition encountered a non-finite value.");

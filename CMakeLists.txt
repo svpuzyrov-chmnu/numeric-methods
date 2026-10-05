@@ -18,7 +18,7 @@ if (CMAKE_COMPILER_IS_GNUCXX)
 endif()
 
 if(MSVC)
-    add_definitions (/W4)
+    add_definitions (/W3)
     add_compile_definitions(_USE_MATH_DEFINES)
 endif()
 
