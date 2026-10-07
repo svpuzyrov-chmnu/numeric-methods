@@ -7,6 +7,7 @@ on:
 jobs:
   build:
     name: Build (${{ matrix.compiler }})
+    environment: numeric-methods-cpp
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -43,6 +44,7 @@ jobs:
 
   test:
     name: Test (${{ matrix.compiler }})
+    environment: numeric-methods-cpp
     needs: build
     runs-on: ubuntu-latest
     strategy:
@@ -78,7 +80,7 @@ jobs:
   notify:
     name: Notify Telegram
     runs-on: ubuntu-latest
-    environment: common
+    environment: numeric-methods-cpp
 
     needs:
       - build
