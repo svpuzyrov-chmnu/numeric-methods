@@ -74,3 +74,110 @@ jobs:
             chmod +x "$test_file"
             "$test_file"
           done
+
+  notify:
+    name: Notify Telegram
+    runs-on: ubuntu-latest
+    environment: common
+
+    needs:
+      - build
+      - test
+
+    if: always()
+
+    steps:
+      - name: Get build job results
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          curl --fail-with-body \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${REPOSITORY}/actions/runs/${RUN_ID}/jobs?per_page=100" \
+            > jobs.json
+
+      - name: Create Telegram message
+        shell: bash
+        run: |
+          {
+            echo "🚀 GitHub Actions"
+            echo ""
+            echo "Repository: ${{ github.repository }}"
+            echo "Branch: ${{ github.ref_name }}"
+            echo "Author: ${{ github.actor }}"
+            echo ""
+            echo "Build results:"
+            echo ""
+
+            for compiler in gcc clang; do
+              result=$(jq -r \
+                --arg name "Build (${compiler})" \
+                '.jobs[] | select(.name == $name) | .conclusion' \
+                jobs.json)
+
+              case "$result" in
+                success)
+                  echo "${compiler}: ✅ SUCCESS"
+                  ;;
+                failure)
+                  echo "${compiler}: ❌ FAILURE"
+                  ;;
+                cancelled)
+                  echo "${compiler}: ⚠️ CANCELLED"
+                  ;;
+                skipped)
+                  echo "${compiler}: ⏭️ SKIPPED"
+                  ;;
+                *)
+                  echo "${compiler}: ❓ ${result}"
+                  ;;
+              esac
+            done
+
+            echo ""
+            echo "Test results:"
+            echo ""
+
+            for compiler in gcc clang; do
+              result=$(jq -r \
+                --arg name "Test (${compiler})" \
+                '.jobs[] | select(.name == $name) | .conclusion' \
+                jobs.json)
+
+              case "$result" in
+                success)
+                  echo "${compiler}: ✅ SUCCESS"
+                  ;;
+                failure)
+                  echo "${compiler}: ❌ FAILURE"
+                  ;;
+                cancelled)
+                  echo "${compiler}: ⚠️ CANCELLED"
+                  ;;
+                skipped)
+                  echo "${compiler}: ⏭️ SKIPPED"
+                  ;;
+                *)
+                  echo "${compiler}: ❓ ${result}"
+                  ;;
+              esac
+            done
+
+            echo ""
+            echo "See workflow:"
+            echo "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          } > message.txt
+
+          cat message.txt
+
+      - name: Send Telegram message
+        uses: appleboy/telegram-action@v1
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          message_thread_id: ${{ secrets.TELEGRAM_THREAD_ID }}
+          message_file: message.txt
