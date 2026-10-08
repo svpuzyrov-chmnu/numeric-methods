@@ -14,24 +14,37 @@ namespace
 {
     const LUDecomposition decomposition;
 
+    std::vector<size_t> inverse_pivoting(const std::vector<size_t>& pivot_indices)
+    {
+        std::vector<size_t> inverse(pivot_indices.size(), 0);
+        for (size_t row = 0; row < pivot_indices.size(); ++row)
+        {
+            inverse[pivot_indices[row]] = row;
+        }
+        return inverse;
+    }
+
     void require_factorization(const RectangleMatrix& coefficients)
     {
         const auto [lower, upper, pivot_indices] = decomposition.decompose(coefficients);
         const auto size = coefficients.rows();
+        const auto inverse_pivot_indices = inverse_pivoting(pivot_indices);
 
         REQUIRE(pivot_indices.size() == size);
 
-        for (size_t row = 0; row < size; ++row)
+        for (size_t original_row = 0; original_row < size; ++original_row)
         {
+            const auto pivoted_row = inverse_pivot_indices[original_row];
+
             for (size_t col = 0; col < size; ++col)
             {
                 double product = 0.0;
                 for (size_t inner = 0; inner < size; ++inner)
                 {
-                    product += lower(row, inner) * upper(inner, col);
+                    product += lower(pivoted_row, inner) * upper(inner, col);
                 }
 
-                REQUIRE(product == Catch::Approx(coefficients(pivot_indices[row], col)).margin(1e-10));
+                REQUIRE(product == Catch::Approx(coefficients(original_row, col)).margin(1e-10));
             }
         }
     }

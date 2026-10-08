@@ -2,19 +2,19 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
-#include "gauss-seidel.hpp"
+#include "jacoby.hpp"
 #include "matrix-all.hpp"
 
 #include <limits>
 #include <stdexcept>
 
-using linear_algebra::gauss_seidel::GaussSeidelResolver;
+using linear_algebra::jacoby::JacobyResolver;
 using linear_algebra::matrix::RectangleMatrix;
 using linear_algebra::vector::Vector;
 
 namespace
 {
-    const GaussSeidelResolver resolver;
+    const JacobyResolver resolver;
 
     RectangleMatrix make_pivoting_matrix(const size_t size)
     {
@@ -54,7 +54,7 @@ namespace
     };
 }
 
-TEST_CASE("Gauss-Seidel resolver solves diagonally dominant systems")
+TEST_CASE("Seidel resolver solves diagonally dominant systems")
 {
     SECTION("Resolve system size 4")
     {
@@ -97,7 +97,7 @@ TEST_CASE("Gauss-Seidel resolver solves diagonally dominant systems")
     }
 }
 
-TEST_CASE("Gauss-Seidel resolver solves pivoting systems of sizes 2 through 5")
+TEST_CASE("Seidel resolver solves pivoting systems of sizes 2 through 5")
 {
     const size_t size = GENERATE(size_t{2}, size_t{3}, size_t{4}, size_t{5});
     DYNAMIC_SECTION("Solves a " << size << "x" << size << " system")
@@ -123,7 +123,7 @@ TEST_CASE("Gauss-Seidel resolver solves pivoting systems of sizes 2 through 5")
     }
 }
 
-TEST_CASE("Gauss-Seidel resolver handles systems without a row swap")
+TEST_CASE("Seidel resolver handles systems without a row swap")
 {
     constexpr double data[3][3] = {
         {4.0, 1.0, -1.0},
@@ -145,7 +145,7 @@ TEST_CASE("Gauss-Seidel resolver handles systems without a row swap")
     }
 }
 
-TEST_CASE("Gauss-Seidel resolver handles singular systems")
+TEST_CASE("Seidel resolver handles singular systems")
 {
     SECTION("Returns a solution for a consistent singular system")
     {
@@ -170,7 +170,7 @@ TEST_CASE("Gauss-Seidel resolver handles singular systems")
     }
 }
 
-TEST_CASE("Gauss-Seidel resolver applies matrix and vector transformations")
+TEST_CASE("Seidel resolver applies matrix and vector transformations")
 {
     constexpr double data[2][2] = {{4.0, 2.0}, {1.0, 5.0}};
     const RectangleMatrix coefficients(data);
@@ -183,7 +183,7 @@ TEST_CASE("Gauss-Seidel resolver applies matrix and vector transformations")
     REQUIRE(coefficients(0, 0) == 4.0);
 }
 
-TEST_CASE("Gauss-Seidel resolver rejects invalid inputs to its transformations")
+TEST_CASE("Seidel resolver rejects invalid inputs to its transformations")
 {
     SECTION("Rejects a matrix with a zero diagonal")
     {
@@ -205,7 +205,7 @@ TEST_CASE("Gauss-Seidel resolver rejects invalid inputs to its transformations")
     }
 }
 
-TEST_CASE("Gauss-Seidel resolver validates dimensions and finite diagonal inputs")
+TEST_CASE("Seidel resolver validates dimensions and finite diagonal inputs")
 {
     SECTION("Rejects non-square matrices")
     {
@@ -275,7 +275,7 @@ TEST_CASE("Gauss-Seidel resolver validates dimensions and finite diagonal inputs
     }
 }
 
-TEST_CASE("Gauss-Seidel resolver reports non-convergent iterations")
+TEST_CASE("Seidel resolver reports non-convergent iterations")
 {
     constexpr double data[2][2] = {{1.0, 2.0}, {2.0, 1.0}};
     const RectangleMatrix coefficients(data);

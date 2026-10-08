@@ -1,4 +1,4 @@
-#include "partial-gauss.hpp"
+#include "stable-partial-gauss.hpp"
 #include <cmath>
 #include <limits>
 #include <stdexcept>
@@ -8,7 +8,7 @@
 
 namespace linear_algebra::gauss
 {
-    vector::Vector PartialGaussResolver::resolve(const matrix::RectangleMatrix& m, const vector::Vector& v) const
+    vector::Vector StablePartialGaussResolver::resolve(const matrix::RectangleMatrix& m, const vector::Vector& v) const
     {
         if (m.rows() != m.cols() || v.size() != m.rows())
         {
@@ -69,7 +69,7 @@ namespace linear_algebra::gauss
         return solution;
     }
 
-    double PartialGaussDeterminantResolver::determinant(const matrix::RectangleMatrix& m) const
+    double StablePartialGaussDeterminantResolver::determinant(const matrix::RectangleMatrix& m) const
     {
         if (m.rows() != m.cols())
         {
@@ -124,7 +124,7 @@ namespace linear_algebra::gauss
         return sign * result;
     }
 
-    matrix::RectangleMatrix PartialGaussInverseMatrixResolver::inverse(const matrix::RectangleMatrix& m) const
+    matrix::RectangleMatrix StablePartialGaussInverseMatrixResolver::inverse(const matrix::RectangleMatrix& m) const
     {
         if (m.rows() != m.cols())
         {

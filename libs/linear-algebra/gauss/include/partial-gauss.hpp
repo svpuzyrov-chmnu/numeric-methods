@@ -12,8 +12,6 @@ namespace linear_algebra::gauss
         ~PartialGaussResolver() override = default;
 
         [[nodiscard]] vector::Vector resolve(const matrix::RectangleMatrix&, const vector::Vector&) const override;
-        
-        [[nodiscard]] vector::Vector deviate(const matrix::RectangleMatrix&, const vector::Vector&, const vector::Vector&) const override;
 
     };
 

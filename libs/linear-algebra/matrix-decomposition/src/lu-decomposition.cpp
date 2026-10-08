@@ -63,7 +63,7 @@ namespace linear_algebra::matrix::decomposition::lu
 
             for (size_t row = pivot_col + 1; row < size; ++row)
             {
-                const auto factor = -m(row, pivot_col) / result.upper(pivot_col, pivot_col);
+                const auto factor = m(row, pivot_col) / result.upper(pivot_col, pivot_col);
 
                 if (!std::isfinite(factor))
                 {
@@ -71,10 +71,11 @@ namespace linear_algebra::matrix::decomposition::lu
                 }
 
                 result.lower(row, pivot_col) = factor;
+                m(row, pivot_col) = 0.0;
 
                 for (size_t col = pivot_col + 1; col < size; ++col)
                 {
-                    m(row, col) += factor * result.upper(pivot_col, col);
+                    m(row, col) -= factor * result.upper(pivot_col, col);
                     if (!std::isfinite(m(row, col)))
                     {
                         throw std::runtime_error("LU decomposition encountered a non-finite value.");

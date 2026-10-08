@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <limits>
 #include <stdexcept>
 
 namespace linear_algebra::seidel
@@ -13,76 +12,8 @@ namespace linear_algebra::seidel
         constexpr size_t max_iterations = 100000;
     }
 
-    void SeidelResolver::validate_diagonal(const matrix::RectangleMatrix& m)
-    {
-        for (size_t row = 0; row < m.rows(); ++row)
-        {
-            if (!std::isfinite(m(row, row)) ||
-                std::abs(m(row, row)) <= std::numeric_limits<double>::epsilon())
-            {
-                throw std::invalid_argument("Seidel iteration requires non-zero finite diagonal coefficients.");
-            }
-        }
-    }
-
-    matrix::RectangleMatrix SeidelResolver::transform_matrix(const matrix::RectangleMatrix& m)
-    {
-        validate_matrix(m);
-        validate_diagonal(m);
-
-        const auto size = m.rows();
-        matrix::RectangleMatrix transformed(size, size);
-        for (size_t row = 0; row < size; ++row)
-        {
-            for (size_t col = 0; col < size; ++col)
-            {
-                transformed(row, col) = row == col ? 0.0 : -m(row, col) / m(row, row);
-            }
-        }
-        validate_matrix(transformed);
-
-        return transformed;
-    }
-
-    vector::Vector SeidelResolver::transform_vector(const matrix::RectangleMatrix& m, const vector::Vector& v)
-    {
-        validate_matrix(m);
-        validate_vector(m, v);
-        validate_diagonal(m);
-
-        vector::Vector transformed(v.size());
-        for (size_t row = 0; row < v.size(); ++row)
-        {
-            transformed[row] = v[row] / m(row, row);
-        }
-        validate_finite_vector(transformed);
-        return transformed;
-    }
-
-    double SeidelResolver::calculate_residual(const matrix::RectangleMatrix& work, const vector::Vector& rhs, const vector::Vector& solution)
-    {
-        const auto size = work.rows();
-
-        double residual_norm = 0.0;
-
-        for (size_t row = 0; row < size; ++row)
-        {
-            auto residual = rhs[row];
-
-            for (size_t col = 0; col < size; ++col)
-            {
-                residual -= work(row, col) * solution[col];
-            }
-
-            residual_norm = std::max(residual_norm, std::abs(residual));
-        }
-
-        return residual_norm;
-    }
-
     vector::Vector SeidelResolver::resolve(const matrix::RectangleMatrix& m, const vector::Vector& v) const
     {
-
         validate_dimensions(m, v);
 
         const auto size = m.rows();
@@ -109,14 +40,21 @@ namespace linear_algebra::seidel
 
         for (size_t iteration = 0; iteration < max_iterations; ++iteration)
         {
+            const vector::Vector previous_solution(solution);
             for (size_t row = 0; row < size; ++row)
             {
                 auto value = scaled_rhs[row];
 
-                for (size_t col = 0; col < size; ++col)
+                for (size_t col = 0; col < row; ++col)
                 {
                     value += iteration_matrix(row, col) * solution[col];
                 }
+
+                for (size_t col = row + 1; col < size; ++col)
+                {
+                    value += iteration_matrix(row, col) * previous_solution[col];
+                }
+
                 if (!std::isfinite(value))
                 {
                     throw std::runtime_error("Seidel iteration diverged.");
@@ -128,7 +66,7 @@ namespace linear_algebra::seidel
 
             if (!std::isfinite(residual_norm))
             {
-                throw std::runtime_error("Seidel iteration diverged.");
+                throw std::runtime_error("Gauss-Seidel iteration diverged.");
             }
 
             const auto solution_norm = linear_core::max_vector_norm(solution);
@@ -141,7 +79,7 @@ namespace linear_algebra::seidel
 
             if (!std::isfinite(residual_tolerance))
             {
-                throw std::runtime_error("Seidel iteration diverged.");
+                throw std::runtime_error("Gauss-Seidel iteration diverged.");
             }
 
             if (residual_norm <= residual_tolerance)
@@ -150,6 +88,6 @@ namespace linear_algebra::seidel
             }
         }
 
-        throw std::runtime_error("Seidel iteration did not converge.");
+        throw std::runtime_error("Gauss-Seidel iteration did not converge.");
     }
 }
