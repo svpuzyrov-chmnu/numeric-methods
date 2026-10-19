@@ -2,7 +2,7 @@
 
 int main() {
 
-    process_linear_by_gauss();
+    process_equation_by_bisect();
 
     return 0;
 }

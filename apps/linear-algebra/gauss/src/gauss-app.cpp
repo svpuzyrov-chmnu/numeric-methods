@@ -1,6 +1,6 @@
 ﻿#include "gauss-app.hpp"
 
-void process_linear_by_gauss()
+void process_equation_by_bisect()
 {
     using std::cout;
     using std::endl;
