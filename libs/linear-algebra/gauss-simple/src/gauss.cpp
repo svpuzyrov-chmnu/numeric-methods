@@ -29,30 +29,32 @@ namespace linear_algebra::gauss::simple
 
     static size_t find_pivot_row(const Matrix& m, const size_t& row)
     {
-        auto row_max_index = row;
+        auto found_row = row;
 
-        check_infinite(m.at(row_max_index).at(row));
+        check_infinite(m.at(found_row).at(row));
 
         for (auto i = row + 1; i < m.size(); ++i)
         {
-            check_infinite(m.at(i).at(row));
-            if (std::fabs(m.at(i).at(row)) > std::fabs(m.at(row_max_index).at(row)))
+            const auto& current_item = m.at(found_row).at(row);
+
+            const auto& next_item = m.at(i).at(row);
+
+            check_infinite(next_item);
+
+            if (std::fabs(next_item) > std::fabs(current_item))
             {
-                row_max_index = i;
+                found_row = i;
             }
         }
 
-        return row_max_index;
+        return found_row;
     }
 
-    static void change_row(Matrix& m, const size_t& source_row, const size_t& target_row)
+    static void change_row(Matrix& m, const size_t& from, const size_t& to)
     {
-        for (size_t column = 0; column < m.size(); column++)
+        for (size_t c = 0; c < m.size(); c++)
         {
-            std::swap(
-                m.at(source_row).at(column),
-                m.at(target_row).at(column)
-            );
+            std::swap(m.at(from).at(c), m.at(to).at(c));
         }
     }
 
@@ -85,56 +87,60 @@ namespace linear_algebra::gauss::simple
         };
 
         //Forward step
-        for (size_t row = 0; row < size; ++row)
+        for (size_t r = 0; r < size; ++r)
         {
-            check_row_infinite(m.at(row), row);
+            check_row_infinite(m.at(r), r);
 
-            check_infinite(rhs.at(row));
+            check_infinite(rhs.at(r));
 
-            const auto& pivot_row = find_pivot_row(m, row);
+            const auto& pivot_row = find_pivot_row(m, r);
 
-            if (pivot_row > row)
+            if (pivot_row > r)
             {
                 check_infinite(rhs.at(pivot_row));
 
-                change_row(m, row, pivot_row);
+                change_row(m, r, pivot_row);
 
-                std::swap(rhs.at(row), rhs.at(pivot_row));
+                std::swap(rhs.at(r), rhs.at(pivot_row));
             }
 
-            check_solution(row);
+            check_solution(r);
 
-            for (auto next_row = row + 1; next_row < size; ++next_row)
+            for (auto next_r = r + 1; next_r < size; ++next_r)
             {
-                const auto& factor = m.at(next_row).at(row) / m.at(row).at(row);
+                const auto& d = m.at(r).at(r);
 
-                for (auto col = row; col < size; ++col)
+                const auto& f = m.at(next_r).at(r) / d;
+
+                for (auto c = r; c < size; ++c)
                 {
-                    m.at(next_row).at(col) -= m.at(row).at(col) * factor;
+                    m.at(next_r).at(c) -= m.at(r).at(c) * f;
                 }
 
-                rhs.at(next_row) -= rhs.at(row) * factor;
+                rhs.at(next_r) -= rhs.at(r) * f;
             }
         }
 
         check_solution(size - 1);
 
         //Backward step
-        Vector result(size);
+        Vector solution(size);
 
-        for (auto row = size; row-- > 0;)
+        for (auto r = size; r-- > 0;)
         {
-            auto sum = 0.0;
+            auto s = 0.0;
 
-            for (auto i = row + 1; i < size; ++i)
+            auto d = m.at(r).at(r);
+
+            for (auto i = r + 1; i < size; ++i)
             {
-                sum += m.at(row).at(i) * result.at(i);
+                s += m.at(r).at(i) * solution.at(i);
             }
 
-            result.at(row) = (rhs.at(row) - sum) / m.at(row).at(row);
+            solution.at(r) = (rhs.at(r) - s) / d;
         }
 
-        return result;
+        return solution;
     }
 
     double det(Matrix m)
@@ -144,32 +150,34 @@ namespace linear_algebra::gauss::simple
         auto sign = 1;
 
         //Forward step
-        for (size_t row = 0; row < size; ++row)
+        for (size_t r = 0; r < size; ++r)
         {
-            const auto& pivot_row = find_pivot_row(m, row);
+            const auto& pivot_row = find_pivot_row(m, r);
 
-            if (pivot_row > row)
+            if (pivot_row > r)
             {
-                change_row(m, row, pivot_row);
+                change_row(m, r, pivot_row);
                 sign = -sign;
             }
 
-            for (auto i = row + 1; i < size; ++i)
+            for (auto i = r + 1; i < size; ++i)
             {
-                const auto& factor = m.at(i).at(row) / m.at(row).at(row);
+                const auto& d = m.at(r).at(r);
 
-                for (auto j = row; j < size; ++j)
+                const auto& factor = m.at(i).at(r) / d;
+
+                for (auto c = r; c < size; ++c)
                 {
-                    m.at(i).at(j) -= m.at(row).at(j) * factor;
+                    m.at(i).at(c) -= m.at(r).at(c) * factor;
                 }
             }
         }
 
         auto result = 1.0;
 
-        for (size_t row = 0; row < size; ++row)
+        for (size_t r = 0; r < size; ++r)
         {
-            result *= m.at(row).at(row);
+            result *= m.at(r).at(r);
         }
 
         return result * sign;
@@ -181,7 +189,7 @@ namespace linear_algebra::gauss::simple
 
         const auto& size = m.size();
 
-        auto result = matrix::simple::make_identity(size);
+        auto res = matrix::simple::make_identity(size);
 
         auto check_solution = [&](const size_t& row) -> void
         {
@@ -192,69 +200,73 @@ namespace linear_algebra::gauss::simple
         };
 
         //Forward step
-        for (size_t row = 0; row < size; ++row)
+        for (size_t r = 0; r < size; ++r)
         {
-            check_infinite(m.at(row).at(row));
+            check_infinite(m.at(r).at(r));
 
-            const auto& pivot_row = find_pivot_row(m, row);
+            const auto& pivot_row = find_pivot_row(m, r);
 
-            if (pivot_row > row)
+            if (pivot_row > r)
             {
-                change_row(m, row, pivot_row);
-                change_row(result, row, pivot_row);
+                change_row(m, r, pivot_row);
+                change_row(res, r, pivot_row);
             }
 
-            check_solution(row);
+            check_solution(r);
 
-            for (size_t next_row = row + 1; next_row < size; ++next_row)
+            for (size_t next_r = r + 1; next_r < size; ++next_r)
             {
-                const auto& factor = m.at(next_row).at(row) / m.at(row).at(row);
+                const auto& d = m.at(r).at(r);
 
-                for (size_t col = row; col < size; ++col)
+                const auto& f = m.at(next_r).at(r) / d;
+
+                for (size_t c = r; c < size; ++c)
                 {
-                    m.at(next_row).at(col) -= m.at(row).at(col) * factor;
+                    m.at(next_r).at(c) -= m.at(r).at(c) * f;
                 }
 
-                for (size_t j = 0; j < size; ++j)
+                for (size_t c = 0; c < size; ++c)
                 {
-                    result.at(next_row).at(j) -= result.at(row).at(j) * factor;
+                    res.at(next_r).at(c) -= res.at(r).at(c) * f;
                 }
             }
         }
 
         //Backward step
-        for (size_t row = size; row-- > 0;)
+        for (size_t r = size; r-- > 0;)
         {
-            for (size_t next_row = row; next_row-- > 0;)
+            for (size_t next_r = r; next_r-- > 0;)
             {
-                const auto& factor = m.at(next_row).at(row) / m.at(row).at(row);
+                const auto& d = m.at(r).at(r);
 
-                m.at(next_row).at(row) = 0.0;
+                const auto& f = m.at(next_r).at(r) / d;
 
-                for (size_t col = size; col-- > row;)
+                m.at(next_r).at(r) = 0.0;
+
+                for (size_t c = size; c-- > r;)
                 {
-                    m.at(next_row).at(col) -= factor * m.at(row).at(col);
+                    m.at(next_r).at(c) -= f * m.at(r).at(c);
                 }
 
-                for (size_t col = 0; col < size; ++col)
+                for (size_t c = 0; c < size; ++c)
                 {
-                    result.at(next_row).at(col) -= result.at(row).at(col) * factor;
+                    res.at(next_r).at(c) -= res.at(r).at(c) * f;
                 }
             }
         }
 
-        for (size_t row = size; row-- > 0;)
+        for (size_t r = size; r-- > 0;)
         {
-            const auto& divider = m.at(row).at(row);
+            const auto& d = m.at(r).at(r);
 
             for (size_t col = 0; col < size; ++col)
             {
-                result.at(row).at(col) /= divider;
+                res.at(r).at(col) /= d;
             }
 
-            m.at(row).at(row) = 1.0;
+            m.at(r).at(r) = 1.0;
         }
 
-        return result;
+        return res;
     }
 }

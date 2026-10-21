@@ -1,5 +1,6 @@
 ﻿#include "app.hpp"
 #include <iostream>
+#include <fstream>
 #include <iomanip>
 
 namespace linear_algebra::gauss::simple::example
@@ -7,6 +8,7 @@ namespace linear_algebra::gauss::simple::example
     using matrix::simple::operator<<;
     using matrix::simple::operator*;
     using matrix::simple::operator-;
+    using matrix::simple::read_from;
 
     void process_linear_systems_by_gauss()
     {
@@ -20,9 +22,17 @@ namespace linear_algebra::gauss::simple::example
             {44.6162, 3.4236, 19.3524, -24.0845}
         };
 
-        const Vector rhs{2.5603, -10.1311, 8.5549, 18.4019};
+        // const Matrix coefficients = {
+        //     {1.20, 3.40, -0.50, 1.00},
+        //     {-2.50, -4.10, -2.7, -2.0},
+        //     {10.30, -22.50, 11.20, 6.00},
+        //     {-0.80, 12.60, 3.10, 8.20}
+        // };
 
-        cout << "===== Resolve system of linear equations ======" << endl;
+        const Vector rhs{2.5603, -10.1311, 8.5549, 18.4019};
+        // const Vector rhs{-1.30, 3.00, 2.40, 5.20};
+
+        cout << "===== Resolve linear eq system ======" << endl;
 
         const auto solution = resolve(coefficients, rhs);
 
@@ -38,14 +48,28 @@ namespace linear_algebra::gauss::simple::example
 
         cout << "Deviate" << endl << rhs - back_rhs << endl;
 
-        cout << "===== Find determinant of matrice ======" << endl;
+        cout << "===== Matrix determinant ======" << endl;
 
         cout << det(coefficients) << endl;
 
-        cout << "===== Find inverse of matrice ======" << endl;
+        cout << "===== Inverse of matrice ======" << endl;
 
         const auto& inv = inverse(coefficients);
 
         cout << inv << endl;
+
+        cout << "===== Try to read matrix from file ======" << endl;
+
+        constexpr auto file_name = "../../resources/matrix/system-2.1.txt";
+
+        if (std::ifstream file(file_name); file)
+        {
+            const auto& matrix = read_from(file);
+
+            cout << matrix << endl;
+        } else
+        {
+            cout << "Could not open file " << file_name << endl;
+        }
     }
 }

@@ -10,6 +10,12 @@ namespace linear_algebra::matrix::simple
 
     using Vector = std::vector<double>;
 
+    struct ExtendMatrix
+    {
+        Matrix matrix;
+        Vector vector;
+    };
+
     using Generator = std::function<double(const size_t&, const size_t&)>;
 
     Matrix make_matrix(const size_t&, const size_t&, const Generator&);
@@ -25,4 +31,9 @@ namespace linear_algebra::matrix::simple
     Matrix operator*(const Matrix&, const Matrix&);
 
     Vector operator*(const Matrix&, const Vector&);
+
+    Matrix read_from(std::istream&);
+
+    ExtendMatrix read_ext_from(std::istream&);
+
 }

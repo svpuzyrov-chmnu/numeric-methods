@@ -1,5 +1,7 @@
 ﻿#include "matrix.hpp"
 #include <iomanip>
+#include <string>
+#include <sstream>
 
 namespace linear_algebra::matrix::simple
 {
@@ -118,5 +120,30 @@ namespace linear_algebra::matrix::simple
         }
 
         return result;
+    }
+
+    Matrix read_from(std::istream& is)
+    {
+        std::string line;
+
+        Matrix matrix;
+
+        while (std::getline(is, line, '\n'))
+        {
+            std::stringstream ss(line);
+
+            double item;
+
+            Vector vector;
+
+            while (ss >> item)
+            {
+                vector.push_back(item);
+            }
+
+            matrix.push_back(vector);
+        }
+
+        return matrix;
     }
 }
