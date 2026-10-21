@@ -2,6 +2,7 @@
 add_subdirectory("matrix")
 add_subdirectory("matrix-decomposition")
 add_subdirectory("gauss")
+add_subdirectory("gauss-simple")
 add_subdirectory("seidel")
 add_subdirectory("gauss-seidel")
 add_subdirectory("band")

@@ -54,16 +54,16 @@ namespace linear_algebra::gauss
 
         vector::Vector solution(size);
 
-        for (size_t row = size; row > 0; --row)
+        for (size_t row = size; row-- > 0;)
         {
-            auto value = rhs[row - 1];
+            auto value = rhs[row];
 
             for (size_t col = row; col < size; ++col)
             {
-                value -= work(row - 1, col) * solution[col];
+                value -= work(row, col) * solution[col];
             }
 
-            solution[row - 1] = value / work(row - 1, row - 1);
+            solution[row] = value / work(row, row);
         }
 
         return solution;
@@ -174,22 +174,22 @@ namespace linear_algebra::gauss
             }
         }
 
-        for (size_t row = size; row > 0; --row)
+        for (size_t row = size; row-- > 0;)
         {
-            for (size_t next_row = row - 1; next_row > 0; --next_row)
+            for (size_t next_row = row; next_row-- > 0;)
             {
-                const auto factor = work(next_row - 1, row - 1) / work(row - 1, row - 1);
+                const auto factor = work(next_row, row) / work(row, row);
 
-                work(next_row - 1, row - 1) = 0.0;
+                work(next_row, row) = 0.0;
 
-                for (size_t col = size; col >= row; --col)
+                for (size_t col = size; col-- > row;)
                 {
-                    work(next_row - 1, col - 1) -= factor * work(row - 1, col - 1);
+                    work(next_row, col) -= factor * work(row, col);
                 }
 
-                for (size_t col = size; col > 0; --col)
+                for (size_t col = size; col-- > 0;)
                 {
-                    identity(next_row - 1, col - 1) -= factor * identity(row - 1, col - 1);
+                    identity(next_row, col) -= factor * identity(row, col);
                 }
             }
         }
