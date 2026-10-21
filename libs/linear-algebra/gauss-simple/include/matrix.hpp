@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <functional>
 
 namespace linear_algebra::matrix::simple
 {

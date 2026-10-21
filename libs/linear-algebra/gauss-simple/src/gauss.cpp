@@ -1,4 +1,5 @@
 ﻿#include "gauss.hpp"
+#include <cmath>
 
 namespace linear_algebra::gauss::simple
 {

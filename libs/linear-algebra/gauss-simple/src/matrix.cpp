@@ -1,4 +1,4 @@
-﻿#include "gauss.hpp"
+﻿#include "matrix.hpp"
 #include <iomanip>
 
 namespace linear_algebra::matrix::simple
@@ -20,10 +20,12 @@ namespace linear_algebra::matrix::simple
 
     Matrix make_identity(const size_t& size)
     {
-        return make_matrix(size, size, [](const auto& row, const auto& col)
+        auto g = [](const auto& row, const auto& col)
         {
             return row == col ? 1.0 : 0.0;
-        });
+        };
+
+        return make_matrix(size, size, g);
     }
 
     std::ostream& operator<<(std::ostream& os, const Matrix& matrix)
