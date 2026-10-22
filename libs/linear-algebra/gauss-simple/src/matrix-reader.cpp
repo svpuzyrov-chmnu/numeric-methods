@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <cmath>
 
 namespace linear_algebra::matrix::simple::reader
 {
