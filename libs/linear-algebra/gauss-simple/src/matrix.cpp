@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <string>
 #include <sstream>
+#include <fstream>
 
 namespace linear_algebra::matrix::simple
 {
@@ -28,31 +29,6 @@ namespace linear_algebra::matrix::simple
         };
 
         return make_matrix(size, size, g);
-    }
-
-    std::ostream& operator<<(std::ostream& os, const Matrix& matrix)
-    {
-        for (const auto& row : matrix)
-        {
-            for (const auto& item : row)
-            {
-                os << std::setw(15) << std::setprecision(5) << item;
-            }
-
-            os << std::endl;
-        }
-
-        return os;
-    }
-
-    std::ostream& operator<<(std::ostream& os, const Vector& vector)
-    {
-        for (const auto& item : vector)
-        {
-            os << std::setw(15) << std::setprecision(5) << item;
-        }
-
-        return os;
     }
 
     Vector operator-(const Vector& vector1, const Vector& vector2)
@@ -120,30 +96,5 @@ namespace linear_algebra::matrix::simple
         }
 
         return result;
-    }
-
-    Matrix read_from(std::istream& is)
-    {
-        std::string line;
-
-        Matrix matrix;
-
-        while (std::getline(is, line, '\n'))
-        {
-            std::stringstream ss(line);
-
-            double item;
-
-            Vector vector;
-
-            while (ss >> item)
-            {
-                vector.push_back(item);
-            }
-
-            matrix.push_back(vector);
-        }
-
-        return matrix;
     }
 }

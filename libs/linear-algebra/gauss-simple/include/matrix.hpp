@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <functional>
+#include <string>
 
 namespace linear_algebra::matrix::simple
 {
@@ -22,18 +23,10 @@ namespace linear_algebra::matrix::simple
 
     Matrix make_identity(const size_t&);
 
-    std::ostream& operator<<(std::ostream&, const Matrix&);
-
-    std::ostream& operator<<(std::ostream&, const Vector&);
-
     Vector operator-(const Vector&, const Vector&);
 
     Matrix operator*(const Matrix&, const Matrix&);
 
     Vector operator*(const Matrix&, const Vector&);
-
-    Matrix read_from(std::istream&);
-
-    ExtendMatrix read_ext_from(std::istream&);
 
 }
