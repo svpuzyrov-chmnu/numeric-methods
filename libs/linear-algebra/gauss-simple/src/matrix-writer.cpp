@@ -2,15 +2,16 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <iomanip>
 
 namespace linear_algebra::matrix::simple::writer
 {
     void write_to(std::ostream& os, const Vector& v)
     {
-    }
-
-    void write_to(const std::ostream& os, const Vector& v)
-    {
+        for (const auto& item : v)
+        {
+            os << std::setw(15) << std::setprecision(5) << item;
+        }
     }
 
     void write_to(std::ostream& os, const Matrix& m)

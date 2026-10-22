@@ -1,7 +1,5 @@
 ﻿#include "matrix.hpp"
 #include <iomanip>
-#include <string>
-#include <sstream>
 #include <fstream>
 
 namespace linear_algebra::matrix::simple
@@ -10,7 +8,7 @@ namespace linear_algebra::matrix::simple
     {
         Matrix result(rows, Vector(cols));
 
-        for (auto row = 0; row < rows; ++row)
+        for (size_t row = 0; row < rows; ++row)
         {
             for (auto column = 0; column < cols; ++column)
             {
