@@ -1,5 +1,6 @@
 ﻿add_subdirectory("core")
 add_subdirectory("matrix")
+add_subdirectory("matrix-simple")
 add_subdirectory("matrix-decomposition")
 add_subdirectory("gauss")
 add_subdirectory("gauss-simple")

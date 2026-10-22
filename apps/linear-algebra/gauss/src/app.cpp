@@ -1,6 +1,9 @@
-﻿#include "gauss-app.hpp"
+﻿#include "app.hpp"
 
-void process_equation_by_gauss()
+#include "partial-gauss.hpp"
+#include "matrix-all.hpp"
+
+void process_line_eq_sys_by_gauss()
 {
     using std::cout;
     using std::endl;
