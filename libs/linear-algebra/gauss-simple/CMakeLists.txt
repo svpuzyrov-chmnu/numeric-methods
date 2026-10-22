@@ -6,7 +6,7 @@ include_directories(include)
 
 add_library(${PROJECT_NAME} ${SRC})
 
-target_link_libraries(${PROJECT_NAME} ${COMMON_DEPS})
+target_link_libraries(${PROJECT_NAME} ${COMMON_DEPS} matrix-simple)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 

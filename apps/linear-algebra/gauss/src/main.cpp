@@ -1,8 +1,8 @@
-﻿#include "gauss-app.hpp"
+﻿#include "app.hpp"
 
 int main() {
 
-    process_equation_by_gauss();
+    process_line_eq_sys_by_gauss();
 
     return 0;
 }

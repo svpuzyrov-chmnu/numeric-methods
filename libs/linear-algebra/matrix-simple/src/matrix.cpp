@@ -76,18 +76,27 @@ namespace linear_algebra::matrix::simple
 
     Vector operator*(const Matrix& matrix, const Vector& vector)
     {
-        if (matrix.size() != vector.size())
+        if (matrix.empty())
+        {
+            if (!vector.empty())
+            {
+                throw std::invalid_argument("matrix size does not match vector size");
+            }
+            return {};
+        }
+
+        if (matrix.at(0).size() != vector.size())
         {
             throw std::invalid_argument("matrix size does not match vector size");
         }
 
-        Vector result(vector.size());
+        Vector result(matrix.size());
 
-        for (size_t row = 0; row < vector.size(); ++row)
+        for (size_t row = 0; row < matrix.size(); ++row)
         {
             result.at(row) = 0.0;
 
-            for (auto column = 0; column < matrix.size(); ++column)
+            for (size_t column = 0; column < vector.size(); ++column)
             {
                 result.at(row) += matrix.at(row).at(column) * vector.at(column);
             }

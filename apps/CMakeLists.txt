@@ -2,3 +2,4 @@
 add_subdirectory ("sequences")
 add_subdirectory ("linear-algebra")
 add_subdirectory ("equation")
+add_subdirectory ("non-linear")
