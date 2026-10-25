@@ -10,7 +10,7 @@ namespace linear_algebra::matrix::simple
 
         for (size_t row = 0; row < rows; ++row)
         {
-            for (auto column = 0; column < cols; ++column)
+            for (size_t column = 0; column < cols; ++column)
             {
                 result.at(row).at(column) = generator(row, column);
             }
