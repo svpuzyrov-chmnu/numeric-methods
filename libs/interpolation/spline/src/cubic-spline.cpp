@@ -84,7 +84,7 @@ namespace interpolation::spline::cubic {
         using core::boundary::BoundaryContext;
         using core::boundary::BoundarySide;
         using core::boundary::BoundaryEquation;
-        using TL_Resolver = linear_algebra::tridiagonal::TridiagonalResolver;
+        using TLR = linear_algebra::tridiagonal::TridiagonalResolver;
 
         const std::size_t n_count = nodes_.size();
         const std::size_t up_index = n_count - 1;
@@ -146,7 +146,7 @@ namespace interpolation::spline::cubic {
             rhs[up_index] = rhs_;
         }
 
-        const auto c = TL_Resolver::resolve(
+        const auto c = TLR::resolve(
             matrix,
             rhs
         );

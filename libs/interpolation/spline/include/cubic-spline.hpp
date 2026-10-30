@@ -1,7 +1,6 @@
 #pragma once
 
 #include <memory>
-#include <matrix.hpp>
 
 #include "spline-core.hpp"
 #include "boundary-generator.hpp"
