@@ -37,9 +37,15 @@ namespace interpolation::core {
     std::ostream &operator<<(std::ostream &os, const Points &points) {
         os << "[";
 
-        for (const auto &p: points) {
-            os << p << ",";
+        for (std::size_t i = 0; i < points.size(); ++i) {
+            os << points[i];
+
+			if (i != points.size() - 1) {
+				os << ", ";
+			}
         }
+
+		os << "]";
 
         return os;
     }

@@ -2,7 +2,7 @@
 
 int main() {
 
-    process_line_eq_sys_by_gauss();
+    process_non_linear_system_by_newton();
 
     return 0;
 }

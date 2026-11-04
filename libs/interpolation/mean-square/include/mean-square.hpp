@@ -3,14 +3,14 @@
 #include "interpolation-core.hpp"
 #include "polynom.hpp"
 
-namespace interpolation::list_squares
+namespace interpolation::mean_square
 {
 
-    class LeastSquares
+	class MeanSquare
     {
         core::Points points_;
     public:
-        explicit LeastSquares(core::Points& points);
+        explicit MeanSquare(core::Points& points);
 
         [[nodiscard]] polynomial::Polynomial approx(const std::size_t&) const;
 

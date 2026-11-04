@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-void process_line_eq_sys_by_gauss()
+void process_non_linear_system_by_newton()
 {
     using nonlinear::core::ConvergenceStatus;
     using nonlinear::newton::IterationResult;

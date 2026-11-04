@@ -1,4 +1,4 @@
-﻿project("least-squares-approx")
+﻿project("mean-square")
 
 file(GLOB SRC src/*.cpp src/*.cxx)
 

@@ -1,5 +1,5 @@
 ﻿add_subdirectory("core")
 add_subdirectory("horner")
-add_subdirectory("least-squares")
+add_subdirectory("mean-square")
 add_subdirectory("lagrange")
 add_subdirectory("spline")
