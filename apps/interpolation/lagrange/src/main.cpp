@@ -2,7 +2,7 @@
 
 int main() {
 
-    process_lagrange_interpolation();
+    process_mean_square();
 
     return 0;
 }

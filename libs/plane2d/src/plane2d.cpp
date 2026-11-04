@@ -1,4 +1,5 @@
 #include "plane2d.hpp"
+#include <algorithm>
 #include <cmath>
 
 namespace plane2d {
@@ -26,6 +27,47 @@ namespace plane2d {
                 }
             }
         }
+    }
+
+    Points tabulate(const std::function<double(double)> &f, const double a, const double b, const std::size_t count) {
+        Points points;
+
+        points.reserve(count);
+
+        const double step = (b - a) / static_cast<double>(count - 1);
+
+        for (std::size_t i = 0; i < count; ++i) {
+            const double x = a + step * static_cast<double>(i);
+            const double y = f(x);
+
+            points.emplace_back(x, y);
+        }
+
+        return points;
+    }
+
+    Point left_point(const Points & points) {
+        if (points.empty()) {
+            throw std::invalid_argument("Empty dataset");
+        }
+
+        const auto it = std::min_element(points.begin(), points.end(), [](const Point &a, const Point &b) {
+            return a.x < b.x;
+        });
+
+        return *it;
+    }
+
+    Point right_point(const Points & points) {
+        if (points.empty()) {
+            throw std::invalid_argument("Empty dataset");
+        }
+
+        const auto it = std::max_element(points.begin(), points.end(), [](const Point &a, const Point &b) {
+            return a.x < b.x;
+        });
+
+        return *it;
     }
 
     std::ostream &operator<<(std::ostream &os, const Point &p) {

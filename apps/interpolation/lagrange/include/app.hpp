@@ -1,3 +1,3 @@
 ﻿#pragma once
 
-void process_lagrange_interpolation();
+void process_mean_square();

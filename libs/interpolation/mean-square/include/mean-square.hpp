@@ -10,7 +10,7 @@ namespace interpolation::mean_square
     {
         plane2d::Points points_;
     public:
-        explicit MeanSquare(plane2d::Points& points);
+        explicit MeanSquare(const plane2d::Points& points);
 
         [[nodiscard]] polynomial::Polynomial approx(const std::size_t&) const;
 
