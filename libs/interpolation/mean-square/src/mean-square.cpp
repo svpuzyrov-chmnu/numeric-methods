@@ -14,8 +14,8 @@ namespace interpolation::mean_square {
 
 
 
-    MeanSquare::MeanSquare(plane2d::Points &points)
-        : points_(std::move(points))
+    MeanSquare::MeanSquare(const plane2d::Points &points)
+        : points_(points)
     {
         plane2d::validate(points_);
     }

@@ -24,6 +24,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Install gnuplot
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y gnuplot-qt
+
       - name: Configure
         env:
           CC: ${{ matrix.cc }}
@@ -55,6 +60,11 @@ jobs:
           - clang
 
     steps:
+      - name: Install gnuplot
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y gnuplot-qt
+
       - name: Download test executables
         uses: actions/download-artifact@v4
         with:
