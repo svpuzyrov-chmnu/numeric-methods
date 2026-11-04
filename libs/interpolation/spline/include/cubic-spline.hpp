@@ -8,8 +8,8 @@
 #include "vector.hpp"
 
 namespace interpolation::spline::cubic {
-    using core::Point;
-    using core::Points;
+    using plane2d::Point;
+    using plane2d::Points;
     using core::Node;
     using core::Nodes;
     using core::Segment;

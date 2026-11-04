@@ -8,7 +8,7 @@ void process_lagrange_interpolation()
     using std::cin;
     using std::endl;
 
-    using interpolation::core::Points;
+    using plane2d::Points;
     using interpolation::lagrange::evaluate;
     
     //v25

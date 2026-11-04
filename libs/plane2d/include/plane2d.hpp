@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 
-namespace interpolation::core
+namespace plane2d
 {
     struct Point
     {

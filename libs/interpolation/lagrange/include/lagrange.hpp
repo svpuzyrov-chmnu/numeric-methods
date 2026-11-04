@@ -1,10 +1,10 @@
 #pragma once
 
-#include "interpolation-core.hpp"
+#include "plane2d.hpp"
 
 namespace interpolation::lagrange
 {
 
-    double evaluate(const core::Points&, const double&);
+    double evaluate(const plane2d::Points&, const double&);
 
 }

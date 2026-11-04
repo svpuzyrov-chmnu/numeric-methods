@@ -4,11 +4,11 @@
 #include <vector>
 #include <array>
 
-#include "interpolation-core.hpp"
+#include "plane2d.hpp"
 
 namespace interpolation::spline::core {
-    using interpolation::core::Point;
-    using interpolation::core::Points;
+    using plane2d::Point;
+    using plane2d::Points;
 
     class Node {
     public:

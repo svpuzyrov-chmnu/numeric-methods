@@ -6,7 +6,7 @@
 #include <limits>
 #include <stdexcept>
 
-using interpolation::core::Points;
+using plane2d::Points;
 using interpolation::mean_square::MeanSquare;
 
 TEST_CASE("Mean square fits a line to the input points")

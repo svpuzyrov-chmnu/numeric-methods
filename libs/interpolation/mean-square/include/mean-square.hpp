@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "interpolation-core.hpp"
+#include "plane2d.hpp"
 #include "polynom.hpp"
 
 namespace interpolation::mean_square
@@ -8,9 +8,9 @@ namespace interpolation::mean_square
 
 	class MeanSquare
     {
-        core::Points points_;
+        plane2d::Points points_;
     public:
-        explicit MeanSquare(core::Points& points);
+        explicit MeanSquare(plane2d::Points& points);
 
         [[nodiscard]] polynomial::Polynomial approx(const std::size_t&) const;
 

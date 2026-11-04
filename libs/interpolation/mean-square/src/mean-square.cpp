@@ -14,10 +14,10 @@ namespace interpolation::mean_square {
 
 
 
-    MeanSquare::MeanSquare(core::Points &points)
+    MeanSquare::MeanSquare(plane2d::Points &points)
         : points_(std::move(points))
     {
-        validate(points_);
+        plane2d::validate(points_);
     }
 
     polynomial::Polynomial MeanSquare::approx(const std::size_t &degree) const {

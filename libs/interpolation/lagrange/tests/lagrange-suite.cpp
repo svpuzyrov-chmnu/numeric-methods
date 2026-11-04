@@ -6,7 +6,7 @@
 #include <limits>
 #include <stdexcept>
 
-using interpolation::core::Points;
+using plane2d::Points;
 using interpolation::lagrange::evaluate;
 
 TEST_CASE("Lagrange interpolation reproduces a linear function")

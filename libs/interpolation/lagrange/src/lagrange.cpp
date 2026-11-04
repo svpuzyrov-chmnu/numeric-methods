@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 namespace interpolation::lagrange {
-    double evaluate(const core::Points &points, const double &x) {
+    double evaluate(const plane2d::Points &points, const double &x) {
         if (const std::size_t n = points.size(); n == 0) {
             throw std::invalid_argument(
                 "Interpolation points are empty"
@@ -16,7 +16,7 @@ namespace interpolation::lagrange {
             );
         }
 
-        core::validate(points);
+        plane2d::validate(points);
 
         double L = 0.0;
 

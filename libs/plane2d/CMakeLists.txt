@@ -1,4 +1,4 @@
-﻿project("interpolation-core")
+﻿project("plane2d")
 
 file(GLOB SRC src/*.cpp src/*.cxx)
 

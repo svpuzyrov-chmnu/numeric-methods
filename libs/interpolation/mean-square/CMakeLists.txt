@@ -6,7 +6,7 @@ include_directories(include)
 
 add_library(${PROJECT_NAME} ${SRC})
 
-set(DOMAIN_DEPS "matrix-simple" "gauss-simple" "horner" "interpolation-core")
+set(DOMAIN_DEPS "plane2d" "matrix-simple" "gauss-simple" "horner")
 
 target_link_libraries(${PROJECT_NAME} ${COMMON_DEPS} ${DOMAIN_DEPS})
 

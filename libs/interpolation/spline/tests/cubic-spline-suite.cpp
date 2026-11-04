@@ -10,7 +10,7 @@
 #include <memory>
 #include <stdexcept>
 
-using interpolation::core::Points;
+using plane2d::Points;
 using interpolation::spline::core::boundary::ClampBoundaryEquationGenerator;
 using interpolation::spline::core::boundary::FreeBoundaryEquationGenerator;
 using interpolation::spline::core::boundary::NaturalBoundaryEquationGenerator;

@@ -1,7 +1,7 @@
-#include "interpolation-core.hpp"
+#include "plane2d.hpp"
 #include <cmath>
 
-namespace interpolation::core {
+namespace plane2d {
     void validate(const Points &points) {
         if (points.empty()) {
             throw std::invalid_argument("Empty dataset");
@@ -21,7 +21,7 @@ namespace interpolation::core {
             for (std::size_t j = i + 1; j < size; ++j) {
                 if (points.at(i).x == points[j].x) {
                     throw std::invalid_argument(
-                        "Interpolation nodes must be distinct"
+                        "Points must be distinct"
                     );
                 }
             }
